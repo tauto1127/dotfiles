@@ -7,4 +7,4 @@ do
     ln -sf `pwd`/$file ~
 done
 
-ln -sf `pwd`/nvim ~/.config/
+
