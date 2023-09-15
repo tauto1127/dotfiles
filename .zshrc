@@ -175,5 +175,5 @@ function code {
     fi
 }
 
-#zshでvim風のキーバインド
+#zsh vi使う
 bindkey -v
