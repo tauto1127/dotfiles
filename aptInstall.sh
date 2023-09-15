@@ -6,7 +6,6 @@ cd fonts
 ./install.sh
 cd ..
 
-zsh
 apt install neovim -y
 ln -sf `pwd`/nvim ~/.config/
 apt install tmux -y
