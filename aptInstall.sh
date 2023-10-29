@@ -6,8 +6,12 @@ cd fonts
 ./install.sh
 cd ..
 
-sudo apt install neovim -y
-ln -sf `pwd`/nvim ~/.config/
+# NVIM INSTALL
+./nvim.appimage --appimage-extract
+./squashfs-root/AppRun --version
+sudo mv squashfs-root /
+sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+
 sudo apt install tmux -y
 
 echo "シェルをzshに変更"
