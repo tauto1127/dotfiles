@@ -9,3 +9,6 @@ cd ..
 sudo apt install neovim -y
 ln -sf `pwd`/nvim ~/.config/
 sudo apt install tmux -y
+
+echo "シェルをzshに変更"
+chsh -s /bin/zsh
