@@ -33,10 +33,10 @@ endif
 
 
 " Set Dein base path (required)
-let s:dein_base = '/Users/takuto/.local/share/dein'
+let s:dein_base = '$HOME/.local/share/dein'
 
 " Set Dein source path (required)
-let s:dein_src = '/Users/takuto/.local/share/dein/repos/github.com/Shougo/dein.vim'
+let s:dein_src = '$HOME/.local/share/dein/repos/github.com/Shougo/dein.vim'
 
 " Set Dein runtime path (required)
 execute 'set runtimepath+=' . s:dein_src
