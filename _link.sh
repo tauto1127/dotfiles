@@ -7,4 +7,3 @@ do
     ln -sf `pwd`/$file ~
 done
 
-

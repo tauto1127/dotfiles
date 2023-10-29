@@ -107,7 +107,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 export PATH="$PATH:/Applications/platform-tools"
 export PATH="/opt/homebrew/bin:$PATH"
-export PATH="$PATH:/Users/takuto/Programming/flutter/bin"
+
+#export PATH="$PATH:/Users/takuto/Programming/flutter/bin"
 
 # HISTROY
 export HISTFILE=~/.zsh_history 
