@@ -127,9 +127,21 @@ endif
 " Enable syntax highlighting
 if has('syntax')
   syntax on
+
 endif
 
 " Uncomment if you want to install not-installed plugins on startup.
 if dein#check_install()
  call dein#install()
 endif"
+
+" cocプラグイン導入
+let g:coc_global_extensions = [
+	\	'coc-css'
+	\,	'coc-html-css-support'
+	\,	'coc-tsserver'
+	\,	'coc-flutter'
+	\,	'coc-json'
+	\,	'coc-html'
+	\,	'coc-python'
+	\,	]
