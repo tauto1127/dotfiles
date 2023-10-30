@@ -99,44 +99,43 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+# FORMAC SETTING
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-export PATH="$PATH:/Applications/platform-tools"
-export PATH="/opt/homebrew/bin:$PATH"
+if uname -a | grep -sq "Darwin"; then
+	export PATH="$PATH:/Applications/platform-tools"
+	export PATH="/opt/homebrew/bin:$PATH"
 
-#export PATH="$PATH:/Users/takuto/Programming/flutter/bin"
+	#export PATH="$PATH:/Users/takuto/Programming/flutter/bin"
 
-# HISTROY
-export HISTFILE=~/.zsh_history 
-export HISTSIZE=100000 
-export SAVEHIST=100000
+	# >>> conda initialize >>>
+	# !! Contents within this block are managed by 'conda init' !!
+	__conda_setup="$('/Users/takuto/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+		eval "$__conda_setup"
+	else
+		if [ -f "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+			. "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh"
+		else
+			export PATH="/Users/takuto/opt/anaconda3/bin:$PATH"
+		fi
+	fi
+	unset __conda_setup
+	# <<< conda initialize <<<
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/takuto/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/takuto/opt/anaconda3/bin:$PATH"
-    fi
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	[ -s "$NVM_DIR/bash_completiosn" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+	source /Users/takuto/.docker/init-zsh.sh || true # Added by Docker Desktop
+
+	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completiosn" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-source /Users/takuto/.docker/init-zsh.sh || true # Added by Docker Desktop
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 alias vi="nvim"
 alias vim="nvim"
@@ -154,10 +153,11 @@ setopt inc_append_history
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# HISTROY
+export HISTFILE=~/.zsh_history # tmuxの自動起動
+export HISTSIZE=100000         # alias tmux="tmux -u2"
+export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -l`
 
-# tmuxの自動起動
-# alias tmux="tmux -u2"
-# count=`ps aux | grep tmux | grep -v grep | wc -l`
 # if test $count -eq 0; then
 #     echo `tmux`
 # elif test $count -eq 1; then
