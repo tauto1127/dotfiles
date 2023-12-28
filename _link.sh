@@ -5,7 +5,7 @@ if [ ! -e $HOME/.config ];then
 	mkdir $HOME/.config
 fi
 # シンボリックリンクの作成
-DOT_FILES=".zshrc .zprofile .tmux.conf"
+DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh"
 for file in $DOT_FILES
 do
     ln -sf `pwd`/$file ~
