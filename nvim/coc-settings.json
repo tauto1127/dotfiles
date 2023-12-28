@@ -1,0 +1,9 @@
+{
+	"flutter.sdk.searchPaths": [
+		"/Users/takuto/fvm/versions"
+	],
+	"flutter.lsp.initialization.closingLabels": true,
+	"flutter.runDevToolsAtStartup": true,
+	"flutter.autoOpenDevLog": true
+}
+
