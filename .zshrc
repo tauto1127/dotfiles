@@ -135,10 +135,10 @@ if uname -a | grep -sq "Darwin"; then
 	source /Users/takuto/.docker/init-zsh.sh || true # Added by Docker Desktop
 
 	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+	# <===ショートカット系
 	function obsidian {
 		open -a "Obsidian"
 	}
-
 	#<--- VSCODEをcodeコマンドで開く
 	function code {
 		if [[ $# = 0 ]]
@@ -150,6 +150,9 @@ if uname -a | grep -sq "Darwin"; then
 			open -a "Visual Studio Code" "$argPath"
 		fi
 	}
+	function lg {
+		lazygit
+	}
 	#firebaseconfig
 	export PATH="$PATH":"$HOME/.pub-cache/bin"
 
@@ -157,6 +160,7 @@ if uname -a | grep -sq "Darwin"; then
 	export CCACHE_FILECLONE=true
 	export CCACHE_DEPEND=true
 	export CCACHE_INODECACHE=true
+
 fi #MAC終わり
 
 alias vi="nvim"
