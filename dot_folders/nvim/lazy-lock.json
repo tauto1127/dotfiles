@@ -1,4 +1,5 @@
 {
+  "alpha-nvim": { "branch": "main", "commit": "29074eeb869a6cbac9ce1fbbd04f5f5940311b32" },
   "coc.nvim": { "branch": "master", "commit": "f82e420efdb6291d1c3fcac1e20790a7f10f1a78" },
   "dressing.nvim": { "branch": "master", "commit": "94b0d24483d56f3777ee0c8dc51675f21709318c" },
   "flutter-tools.nvim": { "branch": "main", "commit": "34d14ea37313fc755423117b1e9adda058fbffba" },
