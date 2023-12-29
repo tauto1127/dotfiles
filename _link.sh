@@ -6,10 +6,18 @@ if [ ! -e $HOME/.config ];then
 fi
 # シンボリックリンクの作成
 DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh"
+# フォルダー
+DOT_FOLDERS="nvim karabiner iterm2"
+
 for file in $DOT_FILES
 do
     ln -sf `pwd`/$file ~
 done
 
-ln -sf `pwd`/"nvim" ~/.config/
+for folder in $DOT_FOLDERS
+do
+	ln -sf `pwd`/dot_folders/$folder ~/.config/
+done
+
+#ln -sf `pwd`/"nvim" ~/.config/
 
