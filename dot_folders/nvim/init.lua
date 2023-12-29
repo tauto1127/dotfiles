@@ -24,6 +24,7 @@ require("lazy").setup({
 	'akinsho/flutter-tools.nvim',
 	'akinsho/toggleterm.nvim',
 	require('alpha-nvim_plugin'),
+	require('toggleterm_plugin'),
 })
 
 require'nvim-treesitter.configs'.setup {
@@ -55,6 +56,7 @@ require'nvim-treesitter.configs'.setup {
 require('coc_plugin')
 require("nvim-tree").setup()
 
+
 --vim.nnoremap <C-t> :NvimTreeToggle <CR>
 --crで囲むとコマンドとして認識される
 --silentをオンにすると，エラーなどが表示されなくなる
@@ -62,6 +64,9 @@ vim.api.nvim_set_keymap('n', '<C-t>', ':NvimTreeToggle<cr>', { noremap = true, s
 vim.api.nvim_set_keymap('t', 'fj', '<C-\\><C-n>', { noremap = true, silent = true })
 --telescope vscodeのようなファイル探索
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', {noremap = true, silent=true})
+
+vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
+vim.api.nvim_set_keymap('n', 'tp', ':ToggleTerm direction=float<cr>', {noremap = true, silent = true})
 
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
 
