@@ -23,6 +23,7 @@ require("lazy").setup({
 	'nvim-tree/nvim-tree.lua',
 	'akinsho/flutter-tools.nvim',
 	'akinsho/toggleterm.nvim',
+	require('alpha-nvim_plugin'),
 })
 
 require'nvim-treesitter.configs'.setup {
@@ -52,6 +53,9 @@ require'nvim-treesitter.configs'.setup {
 }
 
 require('coc_plugin')
+--require('alpha').setup(require('alpha.themes.startify').config)
+	--config = require('alpha-nvim_plugin').getAlphaConf();
+
 require("nvim-tree").setup()
 
 --vim.nnoremap <C-t> :NvimTreeToggle <CR>
