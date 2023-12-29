@@ -8,5 +8,7 @@ Mac向けも作りたいけど、テストが大変そう
 
 参考：https://tech.smartcamp.co.jp/entry/setup-by-dotfiles
 
-alpha-nvim
+# neovim
+## alpha-nvim
 https://github.com/goolord/alpha-nvim/discussions/16
+アスキーアート https://github.com/goolord/alpha-nvim/discussions/16#discussioncomment-5501375
