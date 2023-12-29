@@ -7,3 +7,6 @@ Mac向けも作りたいけど、テストが大変そう
 - nodejs手動
 
 参考：https://tech.smartcamp.co.jp/entry/setup-by-dotfiles
+
+alpha-nvim
+https://github.com/goolord/alpha-nvim/discussions/16
