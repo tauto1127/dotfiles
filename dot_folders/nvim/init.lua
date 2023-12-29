@@ -66,7 +66,5 @@ vim.api.nvim_set_keymap('t', 'fj', '<C-\\><C-n>', { noremap = true, silent = tru
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', {noremap = true, silent=true})
 
 vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
-vim.api.nvim_set_keymap('n', 'tp', ':ToggleTerm direction=float<cr>', {noremap = true, silent = true})
 
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
-
