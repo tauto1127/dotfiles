@@ -25,8 +25,9 @@ return {
 [[⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢸⣿⣿⣿⣮⣛⠿⢣⠰⠧⠾⣿⣿⣿⣿⣾⣿⢸⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⢀⠐⠀⡀⠄⠀⠀         ]],
 		 }
 		 dashboard.section.buttons.val = {
-		     dashboard.button( "e", "  New file" , ":ene <BAR> startinsert <CR>"),
-		     dashboard.button( "q", "󰅚  Quit NVIM" , ":qa<CR>"),
+		     dashboard.button( "e", "📁 New file" , ":ene <BAR> startinsert <CR>"),
+		     dashboard.button("f", "🔍 Find file",       "<cmd> Telescope find_files <cr>"),
+		     dashboard.button( "q", "×  Quit NVIM" , ":qa<CR>"),
 		 }
 		 local handle = io.popen('fortune')
 		 local fortune = handle:read("*a")
