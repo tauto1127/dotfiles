@@ -25,6 +25,7 @@ require("lazy").setup({
 	require('toggleterm_plugin'),
 	require('flutter-tools_plugin'),
 	require('nvim-lsp-file-operations_plugin'),
+	'tpope/vim-fugitive',
 })
 
 require'nvim-treesitter.configs'.setup {
