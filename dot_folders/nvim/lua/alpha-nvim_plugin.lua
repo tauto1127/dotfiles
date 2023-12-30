@@ -27,6 +27,7 @@ return {
 		 dashboard.section.buttons.val = {
 		     dashboard.button( "e", "📁 New file" , ":ene <BAR> startinsert <CR>"),
 		     dashboard.button("f", "🔍 Find file",       "<cmd> Telescope find_files <cr>"),
+		     dashboard.button("hf", "🔍 Find helps", "<cmd> Telescope help_tags <cr>"),
 		     dashboard.button( "q", "×  Quit NVIM" , ":qa<CR>"),
 		 }
 		 local handle = io.popen('fortune')
