@@ -16,9 +16,9 @@ cd ..
 
 
 brew install python3
-brw install neovim
+brew install neovim
 
-brwe install tmux
+brew install tmux
 
 : << 'COMMENT'
 Write-Output "node-jsをインストールしますか？ (y or n)"
