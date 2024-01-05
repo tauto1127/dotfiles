@@ -1,3 +1,4 @@
+apt install curl -y
 # ZSH INSTALL
 apt install zsh -y
 chsh -s $(which zsh)
