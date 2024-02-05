@@ -1,0 +1,11 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "files.autoSave": "onFocusChange",
+    "workbench.colorTheme": "Visual Studio 2019 Dark",
+    "git.autofetch": true,
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "git.confirmSync": false,
+    "dart.flutterSdkPath": "/Users/takuto/fvm/versions/3.10.6",
+    "dart.debugExternalPackageLibraries": true,
+    "dart.debugSdkLibraries": true
+}
