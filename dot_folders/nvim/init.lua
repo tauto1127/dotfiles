@@ -27,7 +27,12 @@ require("lazy").setup({
 	require('nvim-lsp-file-operations_plugin'),
 	'tpope/vim-fugitive',
 	'airblade/vim-gitgutter',
+	'stevearc/vim-arduino',
+	'alec-gibson/nvim-tetris', 
+	'cohama/lexima.vim',
+	'christoomey/vim-tmux-navigator',
 })
+
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
@@ -327,7 +332,19 @@ vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
 
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
+--タブを閉じる
+vim.api.nvim_set_keymap('n', '<C-x>', ':tabclose<cr>', { noremap = true, silent = true })
 --インデント
 vim.opt.tabstop = 2
 vim.opt.shiftwidth=2
-vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format " .. vim.fn.expand("%"))')
+vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))')
+
+-- <C-w> 系を Vim Tmux Navigator に移譲する
+vim.api.nvim_set_keymap('n', '<C-w>h', ':TmuxNavigateLeft', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-w>j', ':TmuxNavigateDown', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-w>k', ':TmuxNavigateUp', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
+
+--オートコンプリート系
+vim.o.completeopt = "menuone,noinsert"

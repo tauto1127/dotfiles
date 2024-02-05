@@ -132,8 +132,6 @@ if uname -a | grep -sq "Darwin"; then
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completiosn" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-	source /Users/takuto/.docker/init-zsh.sh || true # Added by Docker Desktop
-
 	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 	# <===ショートカット系
 	function obsidian {
@@ -153,13 +151,24 @@ if uname -a | grep -sq "Darwin"; then
 	function lg {
 		lazygit
 	}
+	#<--- Riderをcodeコマンドで開く
+	function rider {
+		if [[ $# = 0 ]]
+			then
+			open -a "Rider"
+		else
+			local argPath="$1"
+			[[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
+			open -a "Rider" "$argPath"
+		fi
+	}
 	#firebaseconfig
 	export PATH="$PATH":"$HOME/.pub-cache/bin"
 
-	export CCACHE_SLOPPINESS=clang_index_store,file_stat_matches,include_file_ctime,include_file_mtime,ivfsoverlay,pch_defines,modules,system_headers,time_macros
-	export CCACHE_FILECLONE=true
-	export CCACHE_DEPEND=true
-	export CCACHE_INODECACHE=true
+	#export CCACHE_SLOPPINESS=clang_index_store,file_stat_matches,include_file_ctime,include_file_mtime,ivfsoverlay,pch_defines,modules,system_headers,time_macros
+	#export CCACHE_FILECLONE=true
+	#export CCACHE_DEPEND=true
+	#export CCACHE_INODECACHE=true
 
 fi #MAC終わり
 
