@@ -151,7 +151,7 @@ if uname -a | grep -sq "Darwin"; then
 	function lg {
 		lazygit
 	}
-	#<--- VSCODEをcodeコマンドで開く
+	#<--- Riderをcodeコマンドで開く
 	function rider {
 		if [[ $# = 0 ]]
 			then
