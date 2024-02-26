@@ -20,13 +20,13 @@ git clone git://github.com/wting/autojump.git
 sh autojump/install.py
 
 
- NVIM INSTALL
+# NVIM INSTALL
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-sudo chmod u+x nvim.appimage
+chmod u+x nvim.appimage
 ./nvim.appimage --appimage-extract
 ./squashfs-root/AppRun --version
-mv squashfs-root /
-ln -s /squashfs-root/AppRun /usr/bin/nvim
+sudo mv squashfs-root /
+sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
 
 sudo apt install python3 -y
 
