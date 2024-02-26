@@ -1,8 +1,8 @@
-apt install curl -y
-apt install wget -y
-apt install snapd -y
+sudo apt install curl -y
+sudo apt install wget -y
+sudo apt install snapd -y
 # ZSH INSTALL
-apt install zsh -y
+sudo apt install zsh -y
 chsh -s $(which zsh)
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 git clone https://github.com/powerline/fonts
@@ -16,17 +16,21 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-${ZSH:-
 
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# NVIM INSTALL
+git clone git://github.com/wting/autojump.git
+sh autojump/install.py
+
+
+ NVIM INSTALL
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-chmod u+x nvim.appimage
+sudo chmod u+x nvim.appimage
 ./nvim.appimage --appimage-extract
 ./squashfs-root/AppRun --version
 mv squashfs-root /
 ln -s /squashfs-root/AppRun /usr/bin/nvim
 
-apt install python3 -y
+sudo apt install python3 -y
 
-apt install tmux -y
+sudo apt install tmux -y
 
 echo "Please run\n"
 echo "chsh -s /bin/zsh\n"
