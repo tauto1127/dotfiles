@@ -1,4 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local nocode = vim.g.vscode == nil
+
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -11,57 +13,57 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup({
-	'nvim-lua/plenary.nvim',
-	'nvim-telescope/telescope.nvim',
-	'mfussenegger/nvim-dap',
-	'stevearc/dressing.nvim', -- telescopeの検索のui
-	'nvim-treesitter/nvim-treesitter',
-	'kyazdani42/nvim-web-devicons', --アイコンたち
-	'neoclide/coc.nvim', 
-	-- https://github.com/nvim-tree/nvim-tree.lua
-	'nvim-tree/nvim-tree.lua',
-	require('alpha-nvim_plugin'),
-	require('toggleterm_plugin'),
-	require('flutter-tools_plugin'),
-	require('nvim-lsp-file-operations_plugin'),
-	'tpope/vim-fugitive',
-	'airblade/vim-gitgutter',
-	'stevearc/vim-arduino',
-	'alec-gibson/nvim-tetris', 
-	'cohama/lexima.vim',
-	'christoomey/vim-tmux-navigator',
-})
-
-
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  auto_install = true,
-
-  -- List of parsers to ignore installing (or "all")
-  ignore_install = { "javascript" },
-  highlight = {
-    enable = true,
-    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-    disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-  },
+local plugins = {
+  'nvim-lua/plenary.nvim',
+  'nvim-telescope/telescope.nvim',
+  'mfussenegger/nvim-dap',
+  'stevearc/dressing.nvim', -- telescopeの検索のui
+  'nvim-treesitter/nvim-treesitter',
+  'kyazdani42/nvim-web-devicons', --アイコンたち
+  'tpope/vim-fugitive',
+  'airblade/vim-gitgutter',
+  'cohama/lexima.vim',
 }
 
-require('coc_plugin')
-require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
+if nocode then
+  table.insert(plugins, 'neoclide/coc.nvim')
+  table.insert(plugins, 'nvim-tree/nvim-tree.lua')
+  table.insert(plugins, require('alpha-nvim_plugin'))
+  table.insert(plugins, require('toggleterm_plugin'))
+  table.insert(plugins, require('nvim-lsp-file-operations_plugin'))
+  table.insert(plugins, 'christoomey/vim-tmux-navigator')
+end
+
+require("lazy").setup(plugins)
+
+if nocode then
+  require'nvim-treesitter.configs'.setup {
+    -- A list of parser names, or "all" (the five listed parsers should always be installed)
+    ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
+
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
+
+    -- Automatically install missing parsers when entering buffer
+    -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+    auto_install = true,
+
+    -- List of parsers to ignore installing (or "all")
+    ignore_install = { "javascript" },
+    highlight = {
+      enable = true,
+      -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+      disable = function(lang, buf)
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+              return true
+          end
+      end,
+    },
+  }
+  require('coc_plugin')
+  require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
       on_attach = "default",
       hijack_cursor = false,
       auto_reload_on_write = true,
@@ -320,31 +322,34 @@ require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
     } -- END_DEFAULT_OPTS
 
 
---vim.nnoremap <C-t> :NvimTreeToggle <CR>
---crで囲むとコマンドとして認識される
---silentをオンにすると，エラーなどが表示されなくなる
-vim.api.nvim_set_keymap('n', '<C-t>', ':NvimTreeToggle<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', 'fj', '<C-\\><C-n>', { noremap = true, silent = true })
---telescope vscodeのようなファイル探索
-vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', {noremap = true, silent=true})
+end
+
+if nocode then
+    --vim.nnoremap <C-t> :NvimTreeToggle <CR>
+  --crで囲むとコマンドとして認識される
+  --silentをオンにすると，エラーなどが表示されなくなる
+  vim.api.nvim_set_keymap('n', '<C-t>', ':NvimTreeToggle<cr>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('t', 'fj', '<C-\\><C-n>', { noremap = true, silent = true })
+  --telescope vscodeのようなファイル探索
+  vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', {noremap = true, silent=true})
+  vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
+  --タブを閉じる
+  vim.api.nvim_set_keymap('n', '<C-x>', ':tabclose<cr>', { noremap = true, silent = true })
+  vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))')
+  -- <C-w> 系を Vim Tmux Navigator に移譲する
+  vim.api.nvim_set_keymap('n', '<C-w>h', ':TmuxNavigateLeft', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>j', ':TmuxNavigateDown', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>k', ':TmuxNavigateUp', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
+end
 
 vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
-vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
 
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
---タブを閉じる
-vim.api.nvim_set_keymap('n', '<C-x>', ':tabclose<cr>', { noremap = true, silent = true })
 --インデント
 vim.opt.tabstop = 2
 vim.opt.shiftwidth=2
-vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))')
-
--- <C-w> 系を Vim Tmux Navigator に移譲する
-vim.api.nvim_set_keymap('n', '<C-w>h', ':TmuxNavigateLeft', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-w>j', ':TmuxNavigateDown', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-w>k', ':TmuxNavigateUp', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
 
 --オートコンプリート系
 vim.o.completeopt = "menuone,noinsert"
