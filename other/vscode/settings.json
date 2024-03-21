@@ -1,0 +1,29 @@
+{
+    "arduino.useArduinoCli": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "files.autoSave": "onFocusChange",
+    "[dart]": {
+        "editor.formatOnSave": false,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "makefile.makePath": "/usr/bin/make",
+    "makefile.makefilePath": "kernel/Makefile",
+    "dart.flutterSdkPath": "/Users/takuto/fvm/versions/3.16.5",
+    "C_Cpp.files.exclude": {
+        
+        "**/.vscode": true,
+        "**/.vs": true
+    },
+    "workbench.colorTheme": "SynthWave '84",
+    "dart.lineLength": 140,
+    "synthwave84.brightness": 0.5
+}
