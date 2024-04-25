@@ -217,3 +217,9 @@ export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -
 bindkey -v
 
 
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/takuto/.dart-cli-completion/zsh-config.zsh ]] && . /Users/takuto/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
