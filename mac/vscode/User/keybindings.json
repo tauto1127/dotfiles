@@ -1,8 +1,140 @@
-// Place your key bindings in this file to override the defaultsauto[]
+// Place your key bindings in this file to override the defaults
 [
+    // --------------------------------------------------
+    // NERD Tree風
+    // --------------------------------------------------
+    // サイドバーの表示トグル(サイドバーの表示・非表示)
     {
-        "key": "tab",
-        "command": "selectNextSuggestion",
-        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
-    }
+        "key": "ctrl+t",
+        "command": "workbench.view.explorer",
+        "when": "!explorerViewletVisible && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "explorerViewletVisible && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+    },
+    // サイドバーフォーカストグル(サイドバーは表示したまま，フォーカスを切り替え)
+    //{
+    //    "key": "ctrl+h",
+    //    "command": "workbench.action.focusSideBar",
+    //    "when": "editorFocus"
+    //},
+    //{
+    //    "key": "ctrl+h",
+    //    "command": "workbench.action.focusFirstEditorGroup",
+    //    "when": "!editorFocus"
+    //},
+    // ファイルの時は"Enter" or "o"で同一タブで表示
+    {
+        "key": "Enter",
+        "command": "list.select",
+        "when": "explorerViewletFocus && explorerViewletVisible && !explorerResourceIsFolder && !inputFocus"
+    },
+    {
+        "key": "o",
+        "command": "list.select",
+        "when": "explorerViewletFocus && explorerViewletVisible && !explorerResourceIsFolder && !inputFocus"
+    },
+    // 
+    // フォルダのときは"Enter" or "o"で展開
+    {
+        "key": "Enter",
+        "command": "list.toggleExpand",
+        "when": "explorerViewletFocus && explorerViewletVisible && explorerResourceIsFolder && !inputFocus"
+    },
+    // "s"で別ウィンドウで開く
+    {
+        "key": "s",
+        "command": "explorer.openToSide",
+        "when": "explorerViewletFocus && explorerViewletVisible && !explorerResourceIsFolder && !inputFocus"
+    },
+    // --- ファイルシステム系 ---
+    // "m + r"でリネーム
+    {
+        "key": "r",
+        "command": "renameFile",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // "m + c"でコピー
+    {
+        "key": "c",
+        "command": "filesExplorer.copy",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // "m + p"でペースト
+    {
+        "key": "p",
+        "command": "filesExplorer.paste",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // "m + a"でファイル追加
+    {
+        "key": "a",
+        "command": "explorer.newFile",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // "m + d"で削除
+    {
+        "key": "d",
+        "command": "deleteFile",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // "m + f"でフォルダ追加
+    {
+        "key": "f",
+        "command": "explorer.newFolder",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "-vscode-neovim.send-cmdline",
+        "when": "neovim.init && neovim.mode == 'cmdline'"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.ctrlKeysNormal.t && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.ctrlKeysInsert.t && neovim.init && neovim.mode == 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "-editor.action.transposeLetters",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.nextPanelView",
+        "when": "neovim.model != 'insert'"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.previousPanelView",
+        "when": "neovim.model != 'insert'"
+    },
+    {
+        "key": "] g",
+        "command": "editor.action.marker.next",
+        "when": "editorFocus && neovim.mode != 'insert'"
+    },
+    {
+        "key": "[ g",
+        "command": "editor.action.marker.prev",
+        "when": "editorFocus && neovim.mode != 'insert'"
+    },
+    {
+        "key": "shift+alt+f8",
+        "command": "-editor.action.marker.prev",
+        "when": "editorFocus"
+    },
+    // <c-i>で補完候補の詳細表示をトグル
+    {
+        "key": "ctrl+i",
+        "command": "toggleSuggestionDetails",
+        "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
+    },
 ]

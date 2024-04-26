@@ -1,11 +1,45 @@
 {
-    "workbench.iconTheme": "material-icon-theme",
+    "arduino.useArduinoCli": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
     "files.autoSave": "onFocusChange",
-    "workbench.colorTheme": "Visual Studio 2019 Dark",
-    "git.autofetch": true,
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            140
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "makefile.makePath": "/usr/bin/make",
+    "makefile.makefilePath": "kernel/Makefile",
+    "dart.flutterSdkPath": "/Users/takuto/fvm/versions/3.16.5",
+    "C_Cpp.files.exclude": {
+        "**/.vscode": true,
+        "**/.vs": true
+    },
+    "workbench.colorTheme": "SynthWave '84",
+    "dart.lineLength": 140,
+    "synthwave84.brightness": 0.5,
+    "editor.suggest.filterGraceful": false,
+    "editor.suggest.preview": true,
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
-    "git.confirmSync": false,
-    "dart.flutterSdkPath": "/Users/takuto/fvm/versions/3.10.6",
-    "dart.debugExternalPackageLibraries": true,
-    "dart.debugSdkLibraries": true
+    "vscode-neovim.neovimExecutablePaths.linux": "vim",
+    "vscode-neovim.neovimExecutablePaths.win32": "vim",
+    "python.defaultInterpreterPath": "python3",
+    "dart.devToolsBrowser": "default",
+    "gitlens.advanced.messages": {
+        "suppressCreatePullRequestPrompt": true
+    },
+    "cursor.cpp.disabledLanguages": [],
+    "terminal.explorerKind": "external",
+    "terminal.external.linuxExec": "zsh",
+    "terminal.integrated.tabs.title": "${process}-${task}",
+    "terminal.integrated.minimumContrastRatio": 7,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "workbench.activityBar.orientation": "vertical"
 }
