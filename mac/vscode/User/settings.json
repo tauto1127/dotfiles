@@ -17,7 +17,6 @@
     },
     "makefile.makePath": "/usr/bin/make",
     "makefile.makefilePath": "kernel/Makefile",
-    "dart.flutterSdkPath": "/Users/takuto/fvm/versions/3.16.5",
     "C_Cpp.files.exclude": {
         "**/.vscode": true,
         "**/.vs": true
@@ -41,5 +40,21 @@
     "terminal.integrated.tabs.title": "${process}-${task}",
     "terminal.integrated.minimumContrastRatio": 7,
     "terminal.integrated.defaultProfile.osx": "zsh",
-    "workbench.activityBar.orientation": "vertical"
+    "workbench.activityBar.orientation": "vertical",
+    "git.autofetch": true,
+    "vscode-pets.throwBallWithMouse": true,
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "vscode-pets.petSize": "medium",
+    "vscode-pets.theme": "forest",
+    "terminal.external.osxExec": "",
+    "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace, MesloLGS NF",
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "discord.idleTimeout": 600,
+    "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
+    "lldb.launch.expressions": "native"
 }
