@@ -89,11 +89,18 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump web-search zsh-autosuggestions zsh-autosuggestions tmux)
+plugins=(git autojump web-search zsh-autosuggestions zsh-autosuggestions tmux zsh-github-copilot)
 
-export ZSH_TMUX_AUTOSTART=true
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# 戻す
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export ZSH_TMUX_AUTONAME_SESSION=true
+export ZSH_AUTOCONNECT=false
+if ! [[ -n $TERM_PROGRAM ]]; then
+	export ZSH_TMUX_ITERM2=true
+fi
+
 source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -144,6 +151,7 @@ if uname -a | grep -sq "Darwin"; then
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completiosn" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+	# tmuxとitemの連携
 	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 	# <===ショートカット系
 	function obsidian {
@@ -181,7 +189,10 @@ if uname -a | grep -sq "Darwin"; then
 	#export CCACHE_FILECLONE=true
 	#export CCACHE_DEPEND=true
 	#export CCACHE_INODECACHE=true
-
+	#
+	# エイリアスの設定 
+	alias rustbook='open -a "Microsoft Edge" ~/Code/book-rust/book/index.html'
+	
 fi #MAC終わり
 
 alias vi="nvim"
@@ -197,8 +208,6 @@ setopt auto_cd
 setopt hist_ignore_dups
 setopt inc_append_history
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # HISTROY
 export HISTFILE=~/.zsh_history # tmuxの自動起動
@@ -215,11 +224,10 @@ export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -
 
 #zsh vi使う
 bindkey -v
-
-
+bindkey '^\' zsh_gh_copilot_explain  # bind Ctrl+\ to explain
+bindkey '^[' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/takuto/.dart-cli-completion/zsh-config.zsh ]] && . /Users/takuto/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
-
