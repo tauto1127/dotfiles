@@ -5,7 +5,7 @@ if [ ! -e $HOME/.config ];then
 	mkdir $HOME/.config
 fi
 # シンボリックリンクの作成
-DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh"
+DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh .skhdrc .yabairc"
 # フォルダー
 DOT_FOLDERS="nvim karabiner iterm2"
 
