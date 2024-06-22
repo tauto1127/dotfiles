@@ -23,6 +23,7 @@ local plugins = {
   'tpope/vim-fugitive',
   'airblade/vim-gitgutter',
   'cohama/lexima.vim',
+	'kylechui/nvim-surround',
 }
 
 if nocode then
@@ -320,8 +321,8 @@ if nocode then
         },
       },
     } -- END_DEFAULT_OPTS
-
-
+else
+	require("nvim-surround").setup();
 end
 
 if nocode then
@@ -342,6 +343,7 @@ if nocode then
   vim.api.nvim_set_keymap('n', '<C-w>k', ':TmuxNavigateUp', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
+else
 end
 
 vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
