@@ -28,7 +28,7 @@ local plugins = {
 }
 
 if nocode then
-  table.insert(plugins, 'neoclide/coc.nvim')
+  --table.insert(plugins, 'neoclide/coc.nvim')
   table.insert(plugins, 'nvim-tree/nvim-tree.lua')
   table.insert(plugins, require('alpha-nvim_plugin'))
   table.insert(plugins, require('toggleterm_plugin'))
@@ -47,6 +47,19 @@ end
 require("lazy").setup(plugins)
 
 if nocode then
+	local cmp = require('cmp')
+	cmp.setup({
+		mapping = cmp.mapping.preset.insert({
+			["<C-p>"] = cmp.mapping.select_prev_item(),
+			["<C-n>"] = cmp.mapping.select_next_item(),
+			['<C-l>'] = cmp.mapping.complete(),
+			['<C-e>'] = cmp.mapping.abort(),
+			["<CR>"] = cmp.mapping.confirm { select = true },
+		}),
+		experimental = {
+			ghost_text = true,
+		},
+	})
   require('obsidian').setup {
 		--Obsidianの設定
     workspaces = {
@@ -94,8 +107,9 @@ if nocode then
 			if note.title then
 				note:add_alias(note.title)
 			end
+			local d = os.date("*t")
 
-			local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+			local out = { id = note.id, aliases = note.aliases, tags = note.tags ,created = d["year"].."-"..d["month"].."-"..d["day"].." "..d["hour"]..":"..d["min"]}
 
 			-- `note.metadata` contains any manually added fields in the frontmatter.
 			-- So here we just make sure those fields are kept in the frontmatter.
@@ -163,7 +177,7 @@ if nocode then
     },
   }
 
-  require('coc_plugin')
+  --require('coc_plugin')
   require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
       on_attach = "default",
       hijack_cursor = false,
@@ -459,6 +473,10 @@ vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
 --インデント
 vim.opt.tabstop = 2
 vim.opt.shiftwidth=2
+
+--conceallevel
+--obsidian-nvimで指定された
+vim.opt.conceallevel = 1
 
 --オートコンプリート系
 vim.o.completeopt = "menuone,noinsert"
