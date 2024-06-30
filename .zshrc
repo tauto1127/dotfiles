@@ -186,7 +186,8 @@ if uname -a | grep -sq "Darwin"; then
 		fi
 	}
 	function obs {
-		vim /Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main
+		cd "/Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main"
+		vim "inbox/1Index.md"
 	}
 	#firebaseconfig
 	export PATH="$PATH":"$HOME/.pub-cache/bin"
