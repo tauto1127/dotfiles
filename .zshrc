@@ -130,6 +130,9 @@ if uname -a | grep -sq "Darwin"; then
 	export PATH="$PATH:/Applications/platform-tools"
 	export PATH="/opt/homebrew/bin:$PATH"
 
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 	#export PATH="$PATH:/Users/takuto/Programming/flutter/bin"
 
 	# >>> conda initialize >>>
@@ -182,6 +185,9 @@ if uname -a | grep -sq "Darwin"; then
 			open -a "Rider" "$argPath"
 		fi
 	}
+	function obs {
+		vim /Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main
+	}
 	#firebaseconfig
 	export PATH="$PATH":"$HOME/.pub-cache/bin"
 
@@ -231,3 +237,4 @@ bindkey '^[' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/takuto/.dart-cli-completion/zsh-config.zsh ]] && . /Users/takuto/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+export PATH=/Users/takuto/opt/anaconda3/bin:/Users/takuto/.nvm/versions/node/v20.15.0/bin:/opt/homebrew/bin:/Users/takuto/.autojump/bin:/Users/takuto/bin:/usr/local/bin:/opt/homebrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/usr/local/share/dotnet:~/.dotnet/tools:/usr/local/go/bin:/Users/takuto/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Applications/platform-tools:/Users/takuto/.pub-cache/bin:/Users/takuto/.dotnet/tools
