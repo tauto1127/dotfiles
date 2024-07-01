@@ -41,6 +41,18 @@ if nocode then
   table.insert(plugins, 'christoomey/vim-tmux-navigator')
   table.insert(plugins, 'nvim-treesitter/nvim-treesitter')
 
+	--tab
+	table.insert(plugins, {
+		'romgrk/barbar.nvim',
+		dependencies = {
+			'lewis6991/gitsigns.nvim',
+			'nvim-tree/nvim-web-devicons',
+		},
+		init = function() vim.g.barbar_auto_setup = false end,
+		opts = {
+
+		}
+	})
 	-- lsp系
   table.insert(plugins, 'neovim/nvim-lspconfig')
   table.insert(plugins, 'williamboman/mason.nvim')
