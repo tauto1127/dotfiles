@@ -89,7 +89,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump web-search zsh-autosuggestions zsh-autosuggestions tmux zsh-github-copilot)
+plugins=(git autojump web-search zsh-autosuggestions zsh-autosuggestions tmux zsh-github-copilot zsh-vi-mode)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # 戻す

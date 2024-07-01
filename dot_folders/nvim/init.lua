@@ -535,11 +535,11 @@ if nocode then
   vim.api.nvim_set_keymap('n', '<C-x>', ':tabclose<cr>', { noremap = true, silent = true })
   vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))')
   -- <C-w> 系を Vim Tmux Navigator に移譲する
-  vim.api.nvim_set_keymap('n', '<C-w>h', ':TmuxNavigateLeft', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-w>j', ':TmuxNavigateDown', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-w>k', ':TmuxNavigateUp', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>h', '<cmd>TmuxNavigateLeft<cr>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>j', '<cmd>TmuxNavigateDown<cr>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>k', '<cmd>TmuxNavigateUp<cr>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>l', '<cmd>TmuxNavigateRight<cr>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-w>\\', '<cmd>TmuxNavigatePrevious<cr>', { noremap = true, silent = true })
 	vim.keymap.set("n", "gf", function()
 		if require("obsidian").util.cursor_on_markdown_link() then
 			return "<cmd>ObsidianFollowLink<CR>"
@@ -550,6 +550,18 @@ if nocode then
 	)
 	--colorscheme
 	vim.cmd[[colorscheme tokyonight]]
+	local Terminal = require("toggleterm.terminal").Terminal
+	local lazygit = Terminal:new({
+		cmd = "lazygit",
+		direction = "float",
+		hidden = true
+	})
+
+	function _lazygit_toggle()
+		lazygit:toggle()
+	end
+
+	vim.api.nvim_set_keymap("n", "lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
 end
 
 vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
@@ -565,3 +577,6 @@ vim.opt.conceallevel = 1
 
 --オートコンプリート系
 vim.o.completeopt = "menuone,noinsert"
+
+-- terminalモードから抜けるためのキー設定
+vim.api.nvim_set_keymap('t', '<C-]>', '<C-\\><C-n>', { noremap = true })
