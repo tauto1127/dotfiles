@@ -18,13 +18,18 @@ local plugins = {
   'nvim-telescope/telescope.nvim',
   'mfussenegger/nvim-dap',
   'stevearc/dressing.nvim', -- telescopeの検索のui
-  'nvim-treesitter/nvim-treesitter',
   'kyazdani42/nvim-web-devicons', --アイコンたち
   'tpope/vim-fugitive',
   'airblade/vim-gitgutter',
   'cohama/lexima.vim',
   'kylechui/nvim-surround',
-  'hrsh7th/nvim-cmp'
+  'hrsh7th/nvim-cmp',
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
 }
 
 if nocode then
@@ -34,6 +39,25 @@ if nocode then
   table.insert(plugins, require('toggleterm_plugin'))
   table.insert(plugins, require('nvim-lsp-file-operations_plugin'))
   table.insert(plugins, 'christoomey/vim-tmux-navigator')
+  table.insert(plugins, 'nvim-treesitter/nvim-treesitter')
+
+	-- lsp系
+  table.insert(plugins, 'neovim/nvim-lspconfig')
+  table.insert(plugins, 'williamboman/mason.nvim')
+  table.insert(plugins, 'williamboman/mason-lspconfig.nvim')
+  table.insert(plugins, 'jose-elias-alvarez/null-ls.nvim')
+  table.insert(plugins, 'hrsh7th/cmp-nvim-lsp')
+  table.insert(plugins, 'hrsh7th/cmp-buffer')
+  table.insert(plugins, 'hrsh7th/cmp-path')
+  table.insert(plugins, 'hrsh7th/cmp-cmdline')
+
+	-- statusばーのプラグイン
+	table.insert(plugins, {
+		'nvim-lualine/lualine.nvim',
+		dependencies = {
+			'nvim-tree/nvim-web-devicons',
+		}
+	})
   table.insert(plugins, {
 	'epwalsh/obsidian.nvim',version="*",
 	lazy=true,
@@ -47,19 +71,66 @@ end
 require("lazy").setup(plugins)
 
 if nocode then
-	local cmp = require('cmp')
-	cmp.setup({
-		mapping = cmp.mapping.preset.insert({
-			["<C-p>"] = cmp.mapping.select_prev_item(),
-			["<C-n>"] = cmp.mapping.select_next_item(),
-			['<C-l>'] = cmp.mapping.complete(),
-			['<C-e>'] = cmp.mapping.abort(),
-			["<CR>"] = cmp.mapping.confirm { select = true },
-		}),
-		experimental = {
-			ghost_text = true,
+--lspの設定
+local cmp = require('cmp')
+cmp.setup({
+	mapping = cmp.mapping.preset.insert({
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-n>"] = cmp.mapping.select_next_item(),
+		['<C-y>'] = cmp.mapping.complete(),
+		['<C-e>'] = cmp.mapping.abort(),
+		["<CR>"] = cmp.mapping.confirm { select = true },
+	}),
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
+	experimental = {
+		ghost_text = true,
+	},
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+	}, {
+		{ name = "buffer" },
+	}),
+})
+require("mason").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"lua_ls",
+	}
+})
+
+require('lualine').setup()
+
+require("lspconfig").lua_ls.setup({
+	settigns = {
+		Lua = {
+			diagnostics = {
+				globals = { 'vim' },
+			},
 		},
-	})
+	},
+})
+require("lspconfig").csharp_ls.setup({
+})
+
+local null_ls = require("null-ls")
+null_ls.setup({
+	diagnostics_format = "[#{m}] #{s} (#{c})",
+	sources = {
+--ここでlinterとフォーマッターを設定する
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.diagnostics.luacheck,
+
+		null_ls.builtins.formatting.shfmt,
+		null_ls.builtins.diagnostics.shellcheck,
+		null_ls.builtins.code_actions.shellcheck,
+		null_ls.builtins.formatting.prettier,
+	}
+})
   require('obsidian').setup {
 		--Obsidianの設定
     workspaces = {
@@ -458,13 +529,15 @@ if nocode then
   vim.api.nvim_set_keymap('n', '<C-w>l', ':TmuxNavigateRight', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>\\', ':TmuxNavigatePrevious', { noremap = true, silent = true })
 	vim.keymap.set("n", "gf", function()
-  if require("obsidian").util.cursor_on_markdown_link() then
-    return "<cmd>ObsidianFollowLink<CR>"
-  else
-    return "gf"
-  end
-end, { noremap = false, expr = true })
-else
+		if require("obsidian").util.cursor_on_markdown_link() then
+			return "<cmd>ObsidianFollowLink<CR>"
+		else
+			return "gf"
+		end
+		end, { noremap = false, expr = true }
+	)
+	--colorscheme
+	vim.cmd[[colorscheme tokyonight]]
 end
 
 vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
