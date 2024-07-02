@@ -90,7 +90,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump web-search zsh-autosuggestions tmux zsh-github-copilot zsh-vi-mode)
+plugins=(git autojump web-search zsh-autosuggestions tmux zsh-vi-mode)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # 戻す
@@ -161,6 +161,9 @@ if uname -a | grep -sq "Darwin"; then
 	function obsidian {
 		open -a "Obsidian"
 	}
+	function pdf {
+		zathura $1
+	}
 	#<--- VSCODEをcodeコマンドで開く
 	function code {
 		if [[ $# = 0 ]]
@@ -187,8 +190,12 @@ if uname -a | grep -sq "Darwin"; then
 		fi
 	}
 	function obs {
-		cd /Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main
+		cd "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/main"
 		vim "inbox/1Index.md"
+	}
+	function skhdcf {
+		echo "show skhd config"
+		vi ~/.config/skhd/skhdrc -R
 	}
 	#firebaseconfig
 	export PATH="$PATH":"$HOME/.pub-cache/bin"
@@ -230,11 +237,24 @@ export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -
 
 
 
-bindkey '^\' zsh_gh_copilot_explain  # bind Ctrl+\ to explain
-bindkey '^[' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
+# 一旦消す
+#bindkey '^\' zsh_gh_copilot_explain  # bind Ctrl+\ to explain
+#bindkey '^[' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/takuto/.dart-cli-completion/zsh-config.zsh ]] && . /Users/takuto/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 export PATH=/Users/takuto/opt/anaconda3/bin:/Users/takuto/.nvm/versions/node/v20.15.0/bin:/opt/homebrew/bin:/Users/takuto/.autojump/bin:/Users/takuto/bin:/usr/local/bin:/opt/homebrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/usr/local/share/dotnet:~/.dotnet/tools:/usr/local/go/bin:/Users/takuto/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Applications/platform-tools:/Users/takuto/.pub-cache/bin:/Users/takuto/.dotnet/tools
+
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
