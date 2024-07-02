@@ -187,7 +187,7 @@ if uname -a | grep -sq "Darwin"; then
 		fi
 	}
 	function obs {
-		cd "/Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main"
+		cd /Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main
 		vim "inbox/1Index.md"
 	}
 	#firebaseconfig
@@ -230,8 +230,6 @@ export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -
 
 
 
-#zsh vi使う
-bindkey -v
 bindkey '^\' zsh_gh_copilot_explain  # bind Ctrl+\ to explain
 bindkey '^[' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
 
