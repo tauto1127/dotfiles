@@ -190,7 +190,8 @@ if uname -a | grep -sq "Darwin"; then
 		fi
 	}
 	function obs {
-		cd "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/main"
+		cd "/Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main" 
+		usleep 100
 		vim "inbox/1Index.md"
 	}
 	function skhdcf {
