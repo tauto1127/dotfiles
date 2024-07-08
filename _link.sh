@@ -7,7 +7,7 @@ fi
 # シンボリックリンクの作成
 DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh .skhdrc .yabairc"
 # フォルダー
-DOT_FOLDERS="nvim karabiner iterm2"
+DOT_FOLDERS="nvim karabiner iterm2 yabai skhd"
 
 for file in $DOT_FILES
 do
