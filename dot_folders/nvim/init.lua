@@ -2,51 +2,98 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 local nocode = vim.g.vscode == nil
 
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+vim.fn.system({
+	"git",
+	"clone",
+	"--filter=blob:none",
+	"https://github.com/folke/lazy.nvim.git",
+	"--branch=stable", -- latest stable release
+	lazypath,
+})
 end
 
 vim.opt.rtp:prepend(lazypath)
 local plugins = {
-  'nvim-lua/plenary.nvim',
-  'nvim-telescope/telescope.nvim',
-  'mfussenegger/nvim-dap',
-  'stevearc/dressing.nvim', -- telescopeの検索のui
-  'kyazdani42/nvim-web-devicons', --アイコンたち
-  'tpope/vim-fugitive',
-  'airblade/vim-gitgutter',
-  'cohama/lexima.vim',
-  'kylechui/nvim-surround',
-  'hrsh7th/nvim-cmp',
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
+'nvim-lua/plenary.nvim',
+'mfussenegger/nvim-dap',
+'stevearc/dressing.nvim', -- telescopeの検索のui
+'kyazdani42/nvim-web-devicons', --アイコンたち
+'tpope/vim-fugitive',
+'airblade/vim-gitgutter',
+'cohama/lexima.vim',
+'kylechui/nvim-surround',
+'nvim-telescope/telescope.nvim',
+'hrsh7th/nvim-cmp',
+	{
+		'folke/tokyonight.nvim',
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
 }
 
 if nocode then
-  --table.insert(plugins, 'neoclide/coc.nvim')
-  table.insert(plugins, 'nvim-tree/nvim-tree.lua')
-  table.insert(plugins, require('alpha-nvim_plugin'))
-  table.insert(plugins, require('toggleterm_plugin'))
-  table.insert(plugins, require('nvim-lsp-file-operations_plugin'))
-  table.insert(plugins, 'christoomey/vim-tmux-navigator')
-  table.insert(plugins, require('flutter-tools_plugin'))
-	table.insert(plugins, {
-		"folke/trouble.nvim",
-		opts = {}, -- for default options, refer to the configuration section for custom setup.
-		cmd = "Trouble",
-		keys = {
-			{
-				"<leader>xx",
+--table.insert(plugins, 'neoclide/coc.nvim')
+table.insert(plugins, 'nvim-tree/nvim-tree.lua')
+table.insert(plugins, require('alpha-nvim_plugin'))
+table.insert(plugins, require('toggleterm_plugin'))
+table.insert(plugins, require('nvim-lsp-file-operations_plugin'))
+table.insert(plugins, 'christoomey/vim-tmux-navigator')
+table.insert(plugins, require('flutter-tools_plugin'))
+table.insert(plugins, {
+	'iamcco/markdown-preview.nvim',
+	cmd = {"MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop"},
+	ft = {"markdown"},
+	build = function()
+		vim.fn["mkdp#util#install"]()
+	end,
+})
+--discord presense
+table.insert(plugins, {
+	'andweeb/presence.nvim',
+})
+table.insert(plugins, 'github/copilot.vim')
+table.insert(plugins, {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+		prompts = {
+			Explain = {
+				prompt = '/COPILOT_EXPLAIN 日本語でカーソル上のコードの説明を段落をつけて書いてください。',
+			},
+			Tests = {
+				prompt = '/COPILOT_TESTS カーソル上のコードの詳細な単体テスト関数を書いてください。',
+			},
+			Fix = {
+				prompt = '/COPILOT_FIX このコードには問題があります。バグを修正したコードに書き換えてください。',
+			},
+			Optimize = {
+				prompt = '/COPILOT_REFACTOR 選択したコードを最適化し、パフォーマンスと可読性を向上させてください。',
+			},
+			Docs = {
+				prompt = '/COPILOT_REFACTOR 選択したコードのドキュメントを書いてください。ドキュメントをコメントとして追加した元のコードを含むコードブロックで回答してください。使用するプログラミング言語に最も適したドキュメントスタイルを使用してください（例：JavaScriptのJSDoc、Pythonのdocstringsなど）',
+			},
+			--FixDiagnostic = {
+			--	prompt = 'ファイル内の次のような診断上の問題を解決してください：',
+			--	selection = select.diagnostics,
+			--}
+		}
+    -- See Commands section for default commands if you want to lazy load on them
+})
+table.insert(plugins, {
+	"folke/trouble.nvim",
+	opts = {}, -- for default options, refer to the configuration section for custom setup.
+	cmd = "Trouble",
+	keys = {
+		{
+			"<leader>xx",
 				"<cmd>Trouble diagnostics toggle<cr>",
 				desc = "Diagnostics (Trouble)",
 			},
@@ -77,7 +124,14 @@ if nocode then
 			},
 		},
 	})
-  --table.insert(plugins, 'nvim-treesitter/nvim-treesitter')
+	table.insert(plugins, 'nvim-treesitter/nvim-treesitter')
+	table.insert(plugins, 
+		{
+			'nvim-telescope/telescope-fzf-native.nvim',
+			build = 'CFLAGS=-march=native make',
+			lazy = true
+		}
+	)
 
 	--tab
 	table.insert(plugins, {
@@ -95,7 +149,7 @@ if nocode then
   table.insert(plugins, 'neovim/nvim-lspconfig')
   table.insert(plugins, 'williamboman/mason.nvim')
   table.insert(plugins, 'williamboman/mason-lspconfig.nvim')
-  table.insert(plugins, 'jose-elias-alvarez/null-ls.nvim')
+  table.insert(plugins, 'nvimtools/none-ls.nvim')
   table.insert(plugins, 'hrsh7th/cmp-nvim-lsp')
   table.insert(plugins, 'hrsh7th/cmp-buffer')
   table.insert(plugins, 'hrsh7th/cmp-path')
@@ -116,13 +170,78 @@ if nocode then
 			"nvim-lua/plenary.nvim",
 		}
   })
+
 end
 
 require("lazy").setup(plugins)
 
 if nocode then
+local Terminal = require("toggleterm.terminal").Terminal
+
+-- Flutterログ用のtoggletermインスタンスを作成
+local flutter_term = Terminal:new({
+  cmd = "",
+  hidden = true,
+  direction = "horizontal",
+  size = 15,
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+})
+
+-- dev_logの設定
+local dev_log = {
+  enabled = true,
+  open_cmd = "tabedit",
+}
+
+require("flutter-tools").setup {
+	dev_log = dev_log,
+	lsp = {
+		settings = {
+			lineLength = (function ()
+				--- ref: https://github.com/akinsho/flutter-tools.nvim/issues/178
+				if(vim.fn.expand('%:p'):find '^/Users/takuto/Code/Dart/Hakondate/') then 
+					echo "hakondateだあ"
+					return 140;
+				end
+				return vim.fn.expand('%:p'):find '^/Users/takuto/Code/Dart/Hakondate/' and 140 or 80 end)(),
+			}
+		}
+}
+require('presence').setup({
+	blacklist = {
+		"*.md",
+		"README.md",
+		"main"
+	}
+})
+require("telescope").setup(
+	{
+			
+		defaults = {
+			file_ignore_patterns = {
+					"^.git/",
+			"^.cache/",
+				}
+			},
+			extensions = {
+				fzf = {
+					fuzzy = true,
+					override_generic_sorter = true,
+					override_file_sorter = true,
+					case_mode = "smart_case"
+				}
+			}
+	}
+
+)
+require("telescope").load_extension("fzf")
+
 --lspの設定
 local cmp = require('cmp')
+
 cmp.setup({
 	mapping = cmp.mapping.preset.insert({
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -137,6 +256,9 @@ cmp.setup({
 		completion = cmp.config.window.bordered(),
 		documentation = cmp.config.window.bordered(),
 	},
+	--completion = {
+	--	autocomplete = true,
+	--},
 	experimental = {
 		ghost_text = true,
 	},
@@ -173,13 +295,31 @@ null_ls.setup({
 	sources = {
 --ここでlinterとフォーマッターを設定する
 		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.diagnostics.luacheck,
+		--null_ls.builtins.diagnostics.luacheck,
+		null_ls.builtins.formatting.clang_format,
 
 		null_ls.builtins.formatting.shfmt,
-		null_ls.builtins.diagnostics.shellcheck,
-		null_ls.builtins.code_actions.shellcheck,
+		--null_ls.builtins.diagnostics.shellcheck,
+		--null_ls.builtins.code_actions.shellcheck,
 		null_ls.builtins.formatting.prettier,
-	}
+
+		null_ls.builtins.formatting.dart_format,
+	},
+	-- you can reuse a shared lspconfig on_attach callback here
+	on_attach = function(client, bufnr)
+			if client.supports_method("textDocument/formatting") then
+					vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+					vim.api.nvim_create_autocmd("BufWritePre", {
+							group = augroup,
+							buffer = bufnr,
+							callback = function()
+									-- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+									-- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+									vim.lsp.buf.format({ bufnr = bufnr })
+							end,
+					})
+			end
+	end,
 })
   require('obsidian').setup {
 		--Obsidianの設定
@@ -262,7 +402,10 @@ null_ls.setup({
 		},
 		sort_by = "modified",
 		sort_reversed = true,
-	-- Specify how to handle attachments.
+		-- Optional, boolean or a function that takes a filename and returns a boolean.
+		-- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
+		disable_frontmatter = false,
+		-- Specify how to handle attachments.
 		attachments = {
 			-- The default folder to place images in via `:ObsidianPasteImg`.
 			-- If this is a relative path it will be interpreted as relative to the vault root.
@@ -280,31 +423,32 @@ null_ls.setup({
 			end,
 		},
   }
-  --require'nvim-treesitter.configs'.setup {
-  --  -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  --  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
 
-  --  -- Install parsers synchronously (only applied to `ensure_installed`)
-  --  sync_install = false,
+  require'nvim-treesitter.configs'.setup {
+    -- A list of parser names, or "all" (the five listed parsers should always be installed)
+    ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
 
-  --  -- Automatically install missing parsers when entering buffer
-  --  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  --  auto_install = true,
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
 
-  --  -- List of parsers to ignore installing (or "all")
-  --  ignore_install = { "javascript" },
-  --  highlight = {
-  --    enable = true,
-  --    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-  --    disable = function(lang, buf)
-  --        local max_filesize = 100 * 1024 -- 100 KB
-  --        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-  --        if ok and stats and stats.size > max_filesize then
-  --            return true
-  --        end
-  --    end,
-  --  },
-  --}
+    -- Automatically install missing parsers when entering buffer
+    -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+    auto_install = true,
+
+    -- List of parsers to ignore installing (or "all")
+    ignore_install = { "javascript" },
+    highlight = {
+      enable = true,
+      -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+      disable = function(lang, buf)
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+              return true
+          end
+      end,
+    },
+  }
 
   --require('coc_plugin')
   require("nvim-tree").setup { -- BEGIN_DEFAULT_OPTS
@@ -576,17 +720,42 @@ if nocode then
   vim.api.nvim_set_keymap('t', 'fj', '<C-\\><C-n>', { noremap = true, silent = true })
   --telescope vscodeのようなファイル探索
   vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', {noremap = true, silent=true})
+  vim.api.nvim_set_keymap("n", "<leader>fl", "<cmd>Telescope live_grep hidden=true<cr>", {noremap = true, silent=true})
   vim.api.nvim_set_keymap('n', 'to', ':ToggleTerm<cr>', {noremap = true, silent = true})--:TogglTerm<cr>
   --タブを閉じる
   vim.api.nvim_set_keymap('n', '<C-x>', ':tabclose<cr>', { noremap = true, silent = true })
   vim.api.nvim_command('command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))')
   vim.api.nvim_command('command! -nargs=0 Today lua vim.cmd("ObsidianToday")')
+  vim.api.nvim_command('command! -nargs=0 Yesterday lua vim.cmd("ObsidianYesterday")')
+  vim.api.nvim_command('command! -nargs=0 Chat lua chat.open()')
   -- <C-w> 系を Vim Tmux Navigator に移譲する
   vim.api.nvim_set_keymap('n', '<C-w>h', '<cmd>TmuxNavigateLeft<cr>', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>j', '<cmd>TmuxNavigateDown<cr>', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>k', '<cmd>TmuxNavigateUp<cr>', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>l', '<cmd>TmuxNavigateRight<cr>', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', '<C-w>\\', '<cmd>TmuxNavigatePrevious<cr>', { noremap = true, silent = true })
+
+	--タブ切り替え(barbar)
+	--bufferNext
+	vim.api.nvim_set_keymap('n', '<C-n>', ':BufferNext<cr>', { noremap = true, silent = true })
+	vim.api.nvim_set_keymap('n', '<C-p>', ':BufferPrevious<cr>', { noremap = true, silent = true })
+
+	-- lspのキー配置
+	-- -- 2. build-in LSP function
+-- keyboard shortcut
+vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')
+vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+vim.keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+vim.keymap.set('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>')
+vim.keymap.set('n', 'g]', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+vim.keymap.set('n', 'g[', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+
 	vim.keymap.set("n", "gf", function()
 		if require("obsidian").util.cursor_on_markdown_link() then
 			return "<cmd>ObsidianFollowLink<CR>"
@@ -610,7 +779,14 @@ if nocode then
 		lazygit:toggle()
 	end
 
-	vim.api.nvim_set_keymap("n", "lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "<leader> lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+end
+-- バッファの内容全体を使って Copilot とチャットする
+function CopilotChatBuffer()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
 end
 
 vim.api.nvim_set_keymap('n', 'ff', '<ESC>', {noremap = true, silent=true})
@@ -646,3 +822,14 @@ vim.api.nvim_set_keymap('n', '<C-q>', '<cmd>b#<cr><cmd>bd#<cr>', { noremap = tru
 --	end
 --}
 --)
+---- キーマッピング
+-- <leader>ccp (Copilot Chat Prompt の略) でアクションプロンプトを表示する
+-- copilotのキー
+-- telescope を使ってアクションプロンプトを表示する
+function ShowCopilotChatActionPrompt()
+  local actions = require("CopilotChat.actions")
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end
+
+vim.api.nvim_set_keymap("n", "<leader>ccp", "<cmd>lua ShowCopilotChatActionPrompt()<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>ccb", "<cmd>lua copilotChatBuffer()<cr>", { noremap = true, silent = true })
