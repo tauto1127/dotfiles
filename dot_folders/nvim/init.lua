@@ -292,6 +292,16 @@ if nocode then
 		},
 	})
 	require("lspconfig").csharp_ls.setup({})
+	require("lspconfig").dartls.setup({
+		init_options = {
+			closingLabels = true,
+			outline = true,
+			flutterOutline = true,
+			onlyAnalyzeProjectsWithOpenFiles = false,
+			completeFunctionCalls = true,
+			suggestFromUnimportedLibraries = true,
+		},
+	})
 
 	local null_ls = require("null-ls")
 	null_ls.setup({
