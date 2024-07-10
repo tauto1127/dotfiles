@@ -191,8 +191,9 @@ if uname -a | grep -sq "Darwin"; then
 	}
 	function obs {
 		cd "/Users/takuto/Library/Mobile Documents/iCloud~md~obsidian/Documents/main" 
-		usleep 100
-		vim "inbox/1Index.md"
+		sleep 0.5
+		pwd
+		nvim "inbox/1Index.md"
 	}
 	function skhdcf {
 		echo "show skhd config"
