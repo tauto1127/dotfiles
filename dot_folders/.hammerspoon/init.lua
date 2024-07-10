@@ -11,5 +11,20 @@ local open_wezterm = function()
 	end
 end
 
+local open_ticktick = function()
+	local appName = "TickTick"
+	local app = hs.application.get(appName)
+
+	if app == nil or app:isHidden() then
+		hs.application.launchOrFocus(appName)
+	else
+		app:hide()
+	end
+end
+
 double_press.timeFrame = 0.3
 double_press.action = open_wezterm
+
+hs.hotkey.bind({ "ctrl", "cmd" }, "t", function()
+	open_ticktick()
+end)
