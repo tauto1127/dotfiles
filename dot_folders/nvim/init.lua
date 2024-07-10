@@ -34,6 +34,14 @@ local plugins = {
 
 if nocode then
 	--table.insert(plugins, 'neoclide/coc.nvim')
+	table.insert(plugins, {
+		"lervag/vimtex",
+		lazy = false,
+		tag = "v2.15",
+		init = function()
+			vim.g.vimtex_view_method = "skim"
+		end,
+	})
 	table.insert(plugins, "nvim-tree/nvim-tree.lua")
 	table.insert(plugins, require("alpha-nvim_plugin"))
 	table.insert(plugins, require("toggleterm_plugin"))
