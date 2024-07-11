@@ -1,5 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 local nocode = vim.g.vscode == nil
+vim.g.mapleader = " "
 
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -48,6 +49,7 @@ if nocode then
 	table.insert(plugins, require("nvim-lsp-file-operations_plugin"))
 	table.insert(plugins, "christoomey/vim-tmux-navigator")
 	table.insert(plugins, require("flutter-tools_plugin"))
+	table.insert(plugins, "akinsho/bufferline.nvim")
 	table.insert(plugins, {
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -140,17 +142,17 @@ if nocode then
 	})
 
 	--tab
-	table.insert(plugins, {
-		"romgrk/barbar.nvim",
-		dependencies = {
-			"lewis6991/gitsigns.nvim",
-			"nvim-tree/nvim-web-devicons",
-		},
-		init = function()
-			vim.g.barbar_auto_setup = false
-		end,
-		opts = {},
-	})
+	--table.insert(plugins, {
+	--	"romgrk/barbar.nvim",
+	--	dependencies = {
+	--		"lewis6991/gitsigns.nvim",
+	--		"nvim-tree/nvim-web-devicons",
+	--	},
+	--	init = function()
+	--		vim.g.barbar_auto_setup = false
+	--	end,
+	--	opts = {},
+	--})
 	-- lsp系
 	table.insert(plugins, "neovim/nvim-lspconfig")
 	table.insert(plugins, "williamboman/mason.nvim")
@@ -184,6 +186,14 @@ require("lazy").setup(plugins)
 if nocode then
 	local Terminal = require("toggleterm.terminal").Terminal
 
+	require("bufferline").setup({
+		options = {
+			mode = "buffers",
+			diagnostics = "nvim_lsp",
+			always_show_bufferline = true,
+			numbers = "buffer_id",
+		},
+	})
 	-- Flutterログ用のtoggletermインスタンスを作成
 	local flutter_term = Terminal:new({
 		cmd = "",
@@ -732,6 +742,8 @@ else
 end
 
 if nocode then
+	--nvim bufferline
+
 	--vim.nnoremap <C-t> :NvimTreeToggle <CR>
 	--crで囲むとコマンドとして認識される
 	--silentをオンにすると，エラーなどが表示されなくなる
@@ -750,6 +762,7 @@ if nocode then
 		"<cmd>Telescope live_grep hidden=true<cr>",
 		{ noremap = true, silent = true }
 	)
+	vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "to", ":ToggleTerm<cr>", { noremap = true, silent = true }) --:TogglTerm<cr>
 	--タブを閉じる
 	vim.api.nvim_set_keymap("n", "<C-x>", ":tabclose<cr>", { noremap = true, silent = true })

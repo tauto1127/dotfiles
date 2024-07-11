@@ -25,6 +25,7 @@ end
 double_press.timeFrame = 0.3
 double_press.action = open_wezterm
 
+-- ticktick
 hs.hotkey.bind({ "ctrl", "cmd" }, "t", function()
 	open_ticktick()
 end)
