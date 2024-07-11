@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
 	"nvim-lua/plenary.nvim",
 	"mfussenegger/nvim-dap",
-	"stevearc/dressing.nvim", -- telescopeの検索のui
+	"stevearc/dressing.nvim",      -- telescopeの検索のui
 	"kyazdani42/nvim-web-devicons", --アイコンたち
 	"tpope/vim-fugitive",
 	"airblade/vim-gitgutter",
@@ -88,7 +88,8 @@ if nocode then
 				prompt = "/COPILOT_REFACTOR 選択したコードを最適化し、パフォーマンスと可読性を向上させてください。",
 			},
 			Docs = {
-				prompt = "/COPILOT_REFACTOR 選択したコードのドキュメントを書いてください。ドキュメントをコメントとして追加した元のコードを含むコードブロックで回答してください。使用するプログラミング言語に最も適したドキュメントスタイルを使用してください（例：JavaScriptのJSDoc、Pythonのdocstringsなど）",
+				prompt =
+				"/COPILOT_REFACTOR 選択したコードのドキュメントを書いてください。ドキュメントをコメントとして追加した元のコードを含むコードブロックで回答してください。使用するプログラミング言語に最も適したドキュメントスタイルを使用してください（例：JavaScriptのJSDoc、Pythonのdocstringsなど）",
 			},
 			--FixDiagnostic = {
 			--	prompt = 'ファイル内の次のような診断上の問題を解決してください：',
@@ -153,6 +154,8 @@ if nocode then
 	--	end,
 	--	opts = {},
 	--})
+	-- buffer
+	table.insert(plugins, "jeetsukumaran/vim-buffergator")
 	-- lsp系
 	table.insert(plugins, "neovim/nvim-lspconfig")
 	table.insert(plugins, "williamboman/mason.nvim")
