@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
 	"nvim-lua/plenary.nvim",
 	"mfussenegger/nvim-dap",
-	"stevearc/dressing.nvim",      -- telescopeの検索のui
+	"stevearc/dressing.nvim", -- telescopeの検索のui
 	"kyazdani42/nvim-web-devicons", --アイコンたち
 	"tpope/vim-fugitive",
 	"airblade/vim-gitgutter",
@@ -88,8 +88,7 @@ if nocode then
 				prompt = "/COPILOT_REFACTOR 選択したコードを最適化し、パフォーマンスと可読性を向上させてください。",
 			},
 			Docs = {
-				prompt =
-				"/COPILOT_REFACTOR 選択したコードのドキュメントを書いてください。ドキュメントをコメントとして追加した元のコードを含むコードブロックで回答してください。使用するプログラミング言語に最も適したドキュメントスタイルを使用してください（例：JavaScriptのJSDoc、Pythonのdocstringsなど）",
+				prompt = "/COPILOT_REFACTOR 選択したコードのドキュメントを書いてください。ドキュメントをコメントとして追加した元のコードを含むコードブロックで回答してください。使用するプログラミング言語に最も適したドキュメントスタイルを使用してください（例：JavaScriptのJSDoc、Pythonのdocstringsなど）",
 			},
 			--FixDiagnostic = {
 			--	prompt = 'ファイル内の次のような診断上の問題を解決してください：',
@@ -215,23 +214,37 @@ if nocode then
 		open_cmd = "tabedit",
 	}
 
-	require("flutter-tools").setup({
-		dev_log = dev_log,
-		lsp = {
-			settings = {
-				lineLength = (function()
-					--- ref: https://github.com/akinsho/flutter-tools.nvim/issues/178
-					if vim.fn.expand("%:p"):find("^/Users/takuto/Code/Dart/Hakondate/") then
-						echo("hakondateだあ")
-						return 140
-					end
-					return vim.fn.expand("%:p"):find("^/Users/takuto/Code/Dart/Hakondate/") and 140 or 80
-				end)(),
-			},
-		},
-	})
+	--	require("flutter-tools").setup({
+	--		dev_tools = {
+	--			autostart = true,
+	--			autoopen = "devtools",
+	--			autoopen_browser = true,
+	--		},
+	--		fvm = true,
+	--		lsp = {
+	--			settings = {
+	--				--//https://dartcode.org/docs/settings/
+	--				lineLength = (function()
+	--					--- ref: https://github.com/akinsho/flutter-tools.nvim/issues/178
+	--					if vim.fn.expand("%:p"):find("^/Users/takuto/Code/Dart/Hakondate/") then
+	--						echo("hakondateだあ")
+	--						return 140
+	--					end
+	--					return vim.fn.expand("%:p"):find("^/Users/takuto/Code/Dart/Hakondate/") and 140 or 80
+	--				end)(),
+	--				widgetGuides = false,
+	--				showTodos = true,
+	--				completeFunctionCalls = true,
+	--				analysisExcludedFolders = {
+	--					vim.fn.expand("$HOME/.pub-cache"),
+	--					vim.fn.expand("$HOME/fvm"),
+	--				},
+	--			},
+	--		},
+	--	})
+	require("telescope").load_extension("flutter")
 	require("presence").setup({
-		debounce_timeout = 10,
+		debounce_timeout = 5,
 		blacklist = {
 			"*.md",
 			"README.md",
@@ -305,16 +318,16 @@ if nocode then
 		},
 	})
 	require("lspconfig").csharp_ls.setup({})
-	require("lspconfig").dartls.setup({
-		init_options = {
-			closingLabels = true,
-			outline = true,
-			flutterOutline = true,
-			onlyAnalyzeProjectsWithOpenFiles = false,
-			completeFunctionCalls = true,
-			suggestFromUnimportedLibraries = true,
-		},
-	})
+	--require("lspconfig").dartls.setup({
+	--	init_options = {
+	--		closingLabels = true,
+	--		outline = true,
+	--		flutterOutline = true,
+	--		onlyAnalyzeProjectsWithOpenFiles = false,
+	--		completeFunctionCalls = true,
+	--		suggestFromUnimportedLibraries = true,
+	--	},
+	--})
 
 	local null_ls = require("null-ls")
 	null_ls.setup({
@@ -802,6 +815,9 @@ if nocode then
 	vim.keymap.set("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>")
 	vim.keymap.set("n", "g]", "<cmd>lua vim.diagnostic.goto_next()<CR>")
 	vim.keymap.set("n", "g[", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+
+	vim.keymap.set("n", "<leader>fc", "<cmd>Telescope flutter commands<CR>")
+	vim.keymap.set("n", "<leader>g", "<cmd>Telescope commands<CR>")
 
 	vim.keymap.set("n", "gf", function()
 		if require("obsidian").util.cursor_on_markdown_link() then
