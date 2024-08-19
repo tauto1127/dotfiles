@@ -1,4 +1,5 @@
 FROM ubuntu:22.04
+RUN sed -i.bak -e "s%http://archive.ubuntu.com/ubuntu/%http://ftp.iij.ad.jp/pub/linux/ubuntu/archive/%g" /etc/apt/sources.list
 RUN apt-get update && apt-get install -y sudo
 
 ARG USERNAME=user
@@ -16,4 +17,8 @@ COPY  . /home/$USERNAME
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-RUN sudo bash aptInstall.sh
+RUN bash aptInstall.sh && \
+    bash _installNodeJs.sh && \
+    echo chsh -s /bin/zsh
+
+CMD ["/bin/zsh"]
