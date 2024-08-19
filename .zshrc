@@ -17,7 +17,7 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 # macの場合
-export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+export PATH=$PATH:$HOME/bin:/usr/local/bin:/opt/homebrew/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -128,8 +128,8 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases ここがmac用
 if uname -a | grep -sq "Darwin"; then
-	export PATH="$PATH:/Applications/platform-tools"
-	export PATH="/opt/homebrew/bin:$PATH"
+	export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+	export PATH="$PATH:/opt/homebrew/bin"
 
   export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
@@ -145,7 +145,7 @@ if uname -a | grep -sq "Darwin"; then
 		if [ -f "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh" ]; then
 			. "/Users/takuto/opt/anaconda3/etc/profile.d/conda.sh"
 		else
-			export PATH="/Users/takuto/opt/anaconda3/bin:$PATH"
+			export PATH="$PATH:/Users/takuto/opt/anaconda3/bin"
 		fi
 	fi
 	unset __conda_setup
@@ -200,7 +200,7 @@ if uname -a | grep -sq "Darwin"; then
 		vi ~/.config/skhd/skhdrc -R
 	}
 	#firebaseconfig
-	export PATH="$PATH":"$HOME/.pub-cache/bin"
+	export PATH="$PATH:$HOME/.pub-cache/bin"
 
 	#export CCACHE_SLOPPINESS=clang_index_store,file_stat_matches,include_file_ctime,include_file_mtime,ivfsoverlay,pch_defines,modules,system_headers,time_macros
 	#export CCACHE_FILECLONE=true
@@ -247,8 +247,8 @@ export SAVEHIST=100000         # count=`ps aux | grep tmux | grep -v grep | wc -
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/takuto/.dart-cli-completion/zsh-config.zsh ]] && . /Users/takuto/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
-export PATH=/Users/takuto/opt/anaconda3/bin:/Users/takuto/.nvm/versions/node/v20.15.0/bin:/opt/homebrew/bin:/Users/takuto/.autojump/bin:/Users/takuto/bin:/usr/local/bin:/opt/homebrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/usr/local/share/dotnet:~/.dotnet/tools:/usr/local/go/bin:/Users/takuto/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Applications/platform-tools:/Users/takuto/.pub-cache/bin:/Users/takuto/.dotnet/tools
-
+#export PATH=$PATH:/Users/takuto/opt/anaconda3/bin:/Users/takuto/.nvm/versions/node/v20.15.0/bin:/opt/homebrew/bin:/Users/takuto/.autojump/bin:/Users/takuto/bin:/usr/local/bin:/opt/homebrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/usr/local/share/dotnet:~/.dotnet/tools:/usr/local/go/bin:/Users/takuto/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Applications/platform-tools:/Users/takuto/.pub-cache/bin:/Users/takuto/.dotnet/tools
+#
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
     tmp="$(mktemp)"
