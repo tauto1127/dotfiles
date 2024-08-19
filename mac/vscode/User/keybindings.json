@@ -116,16 +116,16 @@
         "command": "workbench.action.previousPanelView",
         "when": "neovim.model != 'insert'"
     },
-    {
-        "key": "] g",
-        "command": "editor.action.marker.next",
-        "when": "editorFocus && neovim.mode != 'insert'"
-    },
-    {
-        "key": "[ g",
-        "command": "editor.action.marker.prev",
-        "when": "editorFocus && neovim.mode != 'insert'"
-    },
+    //{
+    //    "key": "g ]",
+    //    "command": "editor.action.marker.next",
+    //    "when": "editorFocus && neovim.mode != 'insert'"
+    //},
+    //{
+    //    "key": "g [",
+    //    "command": "editor.action.marker.prev",
+    //    "when": "editorFocus && neovim.mode != 'insert'"
+    //},
     {
         "key": "shift+alt+f8",
         "command": "-editor.action.marker.prev",
