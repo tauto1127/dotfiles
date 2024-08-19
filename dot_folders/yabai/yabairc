@@ -6,30 +6,35 @@ sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # mission-control desktop labels
-yabai -m space 1 --label code
-yabai -m space 2 --label mail
-yabai -m space 3 --label web
-yabai -m space 4 --label notes
-yabai -m space 5 --label re
-yabai -m space 6 --label media
-yabai -m space 7 --label social
-#yabai -m space 8 --label games
-
-# window rules
-yabai -m rule --add app="^Mail$" space=mail
-yabai -m rule --add app="^Safari$" space=web
-yabai -m rule --add app="^Notes$" space=notes
-yabai -m rule --add app="^ida64$" space=re
-yabai -m rule --add app="^Transmission$" space=media
-yabai -m rule --add app="^Spotify$" space=media
-yabai -m rule --add app="^Discord$" space=social grid=1:1:0:0:1:1 manage=off
+#yabai -m space 1 --label code
+#yabai -m space 2 --label mail
+#yabai -m space 3 --label web
+#yabai -m space 4 --label notes
+#yabai -m space 5 --label re
+#yabai -m space 6 --label media
+#yabai -m space 7 --label social
+##yabai -m space 8 --label games
+#
+## window rules
+#yabai -m rule --add app="^Mail$" space=mail
+#yabai -m rule --add app="^Safari$" space=web
+#yabai -m rule --add app="^Notes$" space=notes
+#yabai -m rule --add app="^ida64$" space=re
+#yabai -m rule --add app="^Transmission$" space=media
+#yabai -m rule --add app="^Spotify$" space=media
+#yabai -m rule --add app="^Discord$" space=social grid=1:1:0:0:1:1 manage=off
 #yabai -m rule --add app="^Steam$" space=games manage=off
 yabai -m rule --add app="^(Calculator|System Preferences|Archive Utility)$" manage=off
 yabai -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
 yabai -m rule --add app="^Simulator$" manage=on
 yabai -m rule --add app="^iPhone$" manage=off
 yabai -m rule --add app="^Rize$" manage=off
-yabai -m rule --add app="^iTerm2$" manage=off
+yabai -m rule --add app="^Rize$" manage=off sticky=on
+yabai -m rule --add app="^TickTick$" manage=off sticky=on float=true
+yabai -m rule --add app="^qemu-system-aarch64$" manage=on 
+yabai -m rule --add app="^iTerm2$" manage=off sticky=on
+yabai -m rule --add app="^WezTerm$"
+
 
 # floatウィンドウが常に最前に来ないようにする
 yabai -m signal --add event=window_created action="yabai -m window \$YABAI_WINDOW_ID --sub-layer normal"
