@@ -5,6 +5,11 @@ debian系のみ対応
 - nodejs手動
 
 参考：https://tech.smartcamp.co.jp/entry/setup-by-dotfiles
+# docker
+https://hub.docker.com/repository/docker/takuto1127/dotfiles/general
+
+linux/arm64,linux/amd64
+
 
 # neovim
 ## alpha-nvim
