@@ -1,7 +1,7 @@
 ---@diagnostic disable: param-type-mismatch
 local nocode = vim.g.vscode == nil
 
-require("lua.vim_pluginmanager")
+require("vim_pluginmanager")
 
 local plugins = {
 	"nvim-lua/plenary.nvim",
@@ -75,7 +75,7 @@ if nocode then
 	require("plugins/lsp-cmp-mason")
 	require("vim_commands")
 	require("vim_options")
-	require("functions")
-	require("lua.vim_keymap")
+	require("vim_functions")
+	require("vim_keymap")
 else
 end
