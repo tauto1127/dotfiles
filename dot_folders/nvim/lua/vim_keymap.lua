@@ -22,12 +22,7 @@ vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { norem
 vim.api.nvim_set_keymap("n", "to", ":ToggleTerm<cr>", { noremap = true, silent = true }) --:TogglTerm<cr>
 --タブを閉じる
 vim.api.nvim_set_keymap("n", "<C-x>", ":tabclose<cr>", { noremap = true, silent = true })
-vim.api.nvim_command(
-	'command! -nargs=0 DartFormat lua vim.api.nvim_command("silent !dart format -l 120 " .. vim.fn.expand("%"))'
-)
-vim.api.nvim_command('command! -nargs=0 Today lua vim.cmd("ObsidianToday")')
-vim.api.nvim_command('command! -nargs=0 Yesterday lua vim.cmd("ObsidianYesterday")')
-vim.api.nvim_command("command! -nargs=0 Chat lua chat.open()")
+
 -- <C-w> 系を Vim Tmux Navigator に移譲する
 vim.api.nvim_set_keymap("n", "<C-w>h", "<cmd>TmuxNavigateLeft<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-w>j", "<cmd>TmuxNavigateDown<cr>", { noremap = true, silent = true })

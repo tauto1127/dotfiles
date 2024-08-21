@@ -10,3 +10,15 @@ function ShowCopilotChatActionPrompt()
 	local actions = require("CopilotChat.actions")
 	require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end
+
+-- lazygit設定
+local Terminal = require("toggleterm.terminal").Terminal
+local lazygit = Terminal:new({
+	cmd = "lazygit",
+	direction = "float",
+	hidden = true,
+})
+
+local function lazygitToggle()
+	lazygit:toggle()
+end
