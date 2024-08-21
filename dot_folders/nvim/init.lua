@@ -32,6 +32,7 @@ local plugins = {
 }
 
 if nocode then
+	table.insert(plugins, "nvim-treesitter/nvim-treesitter")
 	--table.insert(plugins, {
 	--	"nvim-treesitter/nvim-treesitter",
 	--	build = ":TSUpdate",
@@ -59,6 +60,7 @@ if nocode then
 	--})
 
 	table.insert(plugins, require("copilotchat"))
+	table.insert(plugins, require("trouble_plugin"))
 	table.insert(plugins, "kyazdani42/nvim-web-devicons")
 	table.insert(plugins, "hrsh7th/nvim-cmp")
 	table.insert(plugins, {
@@ -104,7 +106,7 @@ if nocode then
 	})
 	----discord presense
 	table.insert(plugins, require("discord_presense"))
-	table.insert(plugins, "github/copilot.vim")
+	table.insert(plugins, "github/copilot.lua")
 	table.insert(plugins, {
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "CFLAGS=-march=native make",
