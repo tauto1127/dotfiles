@@ -2,6 +2,7 @@ vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
 --インデント
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 
 --conceallevel
 --obsidian-nvimで指定された

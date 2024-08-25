@@ -46,7 +46,7 @@ if nocode then
 	table.insert(plugins, require("plugins/markdown-preview_plugin"))
 	----discord presense
 	table.insert(plugins, require("plugins/discord_presense"))
-	table.insert(plugins, "github/copilot.lua")
+	table.insert(plugins, require("plugins/copilot"))
 	table.insert(plugins, {
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "CFLAGS=-march=native make",

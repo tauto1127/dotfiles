@@ -7,16 +7,16 @@ vim.api.nvim_set_keymap("n", "<C-t>", "<cmd>NvimTreeToggle<cr>", { noremap = tru
 vim.api.nvim_set_keymap("t", "fj", "<C-\\><C-n>", { noremap = true, silent = true })
 --telescope vscodeのようなファイル探索
 vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ff",
-	"<cmd>Telescope find_files hidden=true<cr>",
-	{ noremap = true, silent = true }
+  "n",
+  "<leader>ff",
+  "<cmd>Telescope find_files hidden=true<cr>",
+  { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
-	"n",
-	"<leader>fl",
-	"<cmd>Telescope live_grep hidden=true<cr>",
-	{ noremap = true, silent = true }
+  "n",
+  "<leader>fl",
+  "<cmd>Telescope live_grep hidden=true<cr>",
+  { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "to", ":ToggleTerm<cr>", { noremap = true, silent = true }) --:TogglTerm<cr>
@@ -55,14 +55,14 @@ vim.keymap.set("n", "<leader>fc", "<cmd>Telescope flutter commands<CR>")
 vim.keymap.set("n", "<leader>g", "<cmd>Telescope commands<CR>")
 
 vim.keymap.set("n", "gf", function()
-	if require("obsidian").util.cursor_on_markdown_link() then
-		return "<cmd>ObsidianFollowLink<CR>"
-	else
-		return "gf"
-	end
+  if require("obsidian").util.cursor_on_markdown_link() then
+    return "<cmd>ObsidianFollowLink<CR>"
+  else
+    return "gf"
+  end
 end, { noremap = false, expr = true })
 
-vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua LazygitToggle()<CR>", { noremap = true, silent = true })
 -- terminalモードから抜けるためのキー設定
 vim.api.nvim_set_keymap("t", "<C-]>", "<C-\\><C-n>", { noremap = true })
 
@@ -76,9 +76,11 @@ vim.api.nvim_set_keymap("n", "<C-q>", "<cmd>b#<cr><cmd>bd#<cr>", { noremap = tru
 -- telescope を使ってアクションプロンプトを表示する
 
 vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ccp",
-	"<cmd>lua ShowCopilotChatActionPrompt()<cr>",
-	{ noremap = true, silent = true }
+  "n",
+  "<leader>ccp",
+  "<cmd>lua ShowCopilotChatActionPrompt()<cr>",
+  { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>ccb", "<cmd>lua copilotChatBuffer()<cr>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BuffergatorToggle<CR>", { noremap = true, silent = true })
