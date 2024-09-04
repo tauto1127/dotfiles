@@ -1,6 +1,8 @@
 --lspの設定
 local cmp = require("cmp")
 
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 cmp.setup({
 	mapping = cmp.mapping.preset.insert({
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -28,8 +30,10 @@ cmp.setup({
 	}),
 })
 require("lspconfig").eslint.setup({})
-require("lspconfig").csharp_ls.setup({})
+require("lspconfig").csharp_ls.setup({ capabilities = capabilities })
 require("lspconfig").tsserver.setup({})
+require("lspconfig").docker_compose_language_service.setup({})
+require("lspconfig").dockerls.setup({})
 require("lspconfig").lua_ls.setup({
 	settigns = {
 		Lua = {
