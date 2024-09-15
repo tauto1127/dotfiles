@@ -18,10 +18,15 @@ vim.api.nvim_set_keymap(
   "<cmd>Telescope live_grep hidden=true<cr>",
   { noremap = true, silent = true }
 )
+-- oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "to", ":ToggleTerm<cr>", { noremap = true, silent = true }) --:TogglTerm<cr>
 --タブを閉じる
 vim.api.nvim_set_keymap("n", "<C-x>", ":tabclose<cr>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<C-c>", ":CopilotChatToggle<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-a>", ":AvanteAsk<cr>", { noremap = true, silent = true })
 
 -- <C-w> 系を Vim Tmux Navigator に移譲する
 vim.api.nvim_set_keymap("n", "<C-w>h", "<cmd>TmuxNavigateLeft<cr>", { noremap = true, silent = true })
@@ -83,4 +88,16 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_keymap("n", "<leader>ccb", "<cmd>lua copilotChatBuffer()<cr>", { noremap = true, silent = true })
 
+vim.keymap.set("i", "<Tab>", function()
+  if require("copilot.suggestion").is_visible() then
+    require("copilot.suggestion").accept()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+  end
+end, { desc = "Super Tab" })
 vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BuffergatorToggle<CR>", { noremap = true, silent = true })
+-- AvanteAsk
+vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>AvanteAsk<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<leader>aa", "<cmd>AvanteAsk<CR>", { noremap = true, silent = true })
+-- avanteedit
+vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>AvanteEdit<CR>", { noremap = true, silent = true })
