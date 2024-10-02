@@ -4,6 +4,15 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+-- ターミナルのタイトルを設定
+--vim.opt.titlestring = [[%f %h%m%r%w %{v:progname} (%{tabpagenr()} of %{tabpagenr('$')})]]
+vim.o.title = true
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  callback = function()
+    vim.o.titlestring = vim.fn.expand("%:t") .. " - NVIM"
+  end,
+})
+
 --conceallevel
 --obsidian-nvimで指定された
 vim.opt.conceallevel = 1
