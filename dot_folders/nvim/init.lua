@@ -15,9 +15,19 @@ local plugins = {
 }
 
 if nocode then
+  -- remote developemnt
+  table.insert(plugins, require("plugins/remote-dev"))
+  table.insert(plugins, require("plugins/distant"))
+  -- diffview
+  table.insert(plugins, require("plugins/diff-view-nvim"))
+  -- いい感じのoutline表示するやつ
+  table.insert(plugins, require("plugins/aerial"))
   table.insert(plugins, require("plugins/nvim-treesitter_plugin"))
   table.insert(plugins, "stevearc/dressing.nvim") -- telescopeの検索のui
-  table.insert(plugins, require("plugins/focus-nvim"))
+  -- buffer manager
+  table.insert(plugins, require("plugins/buffer_manager-nvim"))
+  -- いい感じにウィンドウ？サイズを変更してくれるやつ
+  -- table.insert(plugins, require("plugins/focus-nvim"))
   table.insert(plugins, "tpope/vim-fugitive")
   table.insert(plugins, "airblade/vim-gitgutter")
   table.insert(plugins, require("plugins/nvim-ts-autotag"))
@@ -25,11 +35,13 @@ if nocode then
   table.insert(plugins, "vim-jp/nvimdoc-ja")
   ----自動かっこ
   table.insert(plugins, "cohama/lexima.vim")
+  table.insert(plugins, "akinsho/git-conflict.nvim")
   table.insert(plugins, require("plugins/oil"))
   table.insert(plugins, require("plugins/copilotchat"))
   table.insert(plugins, require("plugins/trouble_plugin"))
   table.insert(plugins, "kyazdani42/nvim-web-devicons")
   table.insert(plugins, "hrsh7th/nvim-cmp")
+  table.insert(plugins, require("plugins/copilot-cmp"))
   table.insert(plugins, require("theme/tokyonight"))
   table.insert(plugins, require("plugins/avante"))
   table.insert(plugins, {
@@ -40,7 +52,15 @@ if nocode then
       vim.g.vimtex_view_method = "skim"
     end,
   })
-  table.insert(plugins, "mfussenegger/nvim-dap")
+  -- editor(整理してない)
+  table.insert(plugins, {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {},
+  })
+  table.insert(plugins, require("plugins/hop-nvim"))
+  table.insert(plugins, require("plugins/indent-blankline-nvim"))
+  table.insert(plugins, require("plugins/nvim-dap"))
   table.insert(plugins, require("plugins/telescope_plugin"))
   table.insert(plugins, require("plugins/nvim-tree_nvim"))
   table.insert(plugins, require("plugins/alpha-nvim_plugin"))
@@ -50,6 +70,7 @@ if nocode then
   table.insert(plugins, require("plugins/flutter-tools_plugin"))
   table.insert(plugins, require("plugins/bufferline_plugin"))
   table.insert(plugins, require("plugins/markdown-preview_plugin"))
+  table.insert(plugins, require("plugins/octo-nvim"))
   ----discord presense
   table.insert(plugins, require("plugins/discord_presense"))
   table.insert(plugins, require("plugins/copilot"))
@@ -76,6 +97,9 @@ if nocode then
 end
 
 require("lazy").setup(plugins)
+
+-- copilotでmarkdownを使う
+vim.g.copilot_filetypes = { markdown = true }
 
 if nocode then
   require("linter_formatter")

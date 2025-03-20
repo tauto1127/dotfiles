@@ -24,11 +24,11 @@ cmp.setup({
   experimental = {
     ghost_text = true,
   },
-  sources = cmp.config.sources({
+  sources = {
     { name = "nvim_lsp" },
-  }, {
     { name = "buffer" },
-  }),
+    { name = "copilot" },
+  },
 })
 require("lspconfig").eslint.setup({})
 -- require("lspconfig").csharp_ls.setup({ capabilities = capabilities })
@@ -36,6 +36,21 @@ require("lspconfig").tsserver.setup({})
 require("lspconfig").docker_compose_language_service.setup({})
 require("lspconfig").dockerls.setup({})
 require("lspconfig").pylsp.setup({})
+require("lspconfig").gopls.setup({})
+require("lspconfig").kotlin_language_server.setup({})
+require("lspconfig").omnisharp.setup({
+  --root_dir = /Users/takuto/.local/share/nvim/mason/bin
+  cmd = { "/Users/takuto/.local/share/nvim/mason/bin/omnisharp" },
+  settings = {
+    RoslynExtensionsOptions = {
+      --EnableAnalyzersSupport = true,
+      EnableImportCompletion = true,
+    },
+  },
+  --capabilities = capabilities,
+  --enable_import_completion = true,
+  --enable_roslyn_analyzers = true,
+})
 require("lspconfig").lua_ls.setup({
   settigns = {
     Lua = {

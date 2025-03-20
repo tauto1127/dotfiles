@@ -5,6 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export ANTHROPIC_API_KEY=
+
 #alias tmux="tmux -u2"
 
 ## tmuxの自動起動
@@ -260,3 +262,13 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
+
+eval "$(pyenv init -)"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/takuto/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/takuto/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/completion.zsh.inc'; fi

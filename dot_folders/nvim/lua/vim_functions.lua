@@ -6,6 +6,12 @@ function CopilotChatBuffer()
   end
 end
 
+-- newfileの時にmarkdownにする
+vim.api.nvim_create_autocmd({ "BufNewFile" }, {
+  pattern = "*",
+  command = "set filetype=markdown",
+})
+
 function ShowCopilotChatActionPrompt()
   local actions = require("CopilotChat.actions")
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())

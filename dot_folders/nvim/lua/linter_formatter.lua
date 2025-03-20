@@ -5,13 +5,17 @@ null_ls.setup({
     --ここでlinterとフォーマッターを設定する
     null_ls.builtins.formatting.stylua,
     --null_ls.builtins.diagnostics.luacheck,
-    null_ls.builtins.formatting.clang_format,
+    null_ls.builtins.formatting.clang_format.with({
+      extra_args = { "-style={ColumnLimit: 0}" },
+    }),
 
     null_ls.builtins.formatting.shfmt,
+    null_ls.builtins.formatting.dart_format.with({
+      extra_args = { "--line-length", "140" },
+    }),
     --null_ls.builtins.diagnostics.shellcheck,
     --null_ls.builtins.code_actions.shellcheck,
-    null_ls.builtins.formatting.dart_format,
-    null_ls.builtins.formatting.prettier,
+    --null_ls.builtins.formatting.prettier,
   },
   -- you can reuse a shared lspconfig on_attach callback here
   on_attach = function(client, bufnr)
@@ -30,5 +34,5 @@ null_ls.setup({
   end,
 })
 null_ls.builtins.code_actions.gitsigns.with({
-  disabled_filetypes = {},
+  disabled_filetypes = { "typescript", ".ts", "ts" },
 })

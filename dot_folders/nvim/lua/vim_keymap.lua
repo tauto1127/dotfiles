@@ -35,10 +35,9 @@ vim.api.nvim_set_keymap("n", "<C-w>k", "<cmd>TmuxNavigateUp<cr>", { noremap = tr
 vim.api.nvim_set_keymap("n", "<C-w>l", "<cmd>TmuxNavigateRight<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-w>\\", "<cmd>TmuxNavigatePrevious<cr>", { noremap = true, silent = true })
 
---タブ切り替え(barbar)
---bufferNext
-vim.api.nvim_set_keymap("n", "<C-n>", ":BufferNext<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-p>", ":BufferPrevious<cr>", { noremap = true, silent = true })
+--tab切り替え
+vim.api.nvim_set_keymap("n", "<C-n>", ":tabnext<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-p>", ":tabprevious<cr>", { noremap = true, silent = true })
 
 -- lspのキー配置
 -- -- 2. build-in LSP function
@@ -49,7 +48,7 @@ vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
 vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-vim.keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+-- vim.keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
 vim.keymap.set("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>")
 vim.keymap.set("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>")
@@ -70,10 +69,6 @@ end, { noremap = false, expr = true })
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua LazygitToggle()<CR>", { noremap = true, silent = true })
 -- terminalモードから抜けるためのキー設定
 vim.api.nvim_set_keymap("t", "<C-]>", "<C-\\><C-n>", { noremap = true })
-
-vim.api.nvim_set_keymap("n", "<C-n>", "<cmd>bnext<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>bprevious<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-q>", "<cmd>b#<cr><cmd>bd#<cr>", { noremap = true })
 
 ---- キーマッピング
 -- <leader>ccp (Copilot Chat Prompt の略) でアクションプロンプトを表示する
