@@ -1,5 +1,5 @@
 # dotfiles
-debian系のみ対応
+macos, debian
 
 - aptInstall.shを実行
 - nodejs手動
