@@ -52,3 +52,7 @@ double_press.action = open_obsidian
 hs.hotkey.bind({ "ctrl", "cmd" }, "t", function()
   open_ticktick()
 end)
+
+hs.hotkey.bind({ "alt" }, "space", function()
+  open_wezterm()
+end)
