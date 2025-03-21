@@ -68,10 +68,12 @@ brew install --cask tailscale
 brew install --cask postman
 brew install --cask slack
 brew install --cask microsoft-edge
-brew intsall --cask omnifocus
+brew install --cask omnifocus
 brew install --cask bitwarden
+brew install --cask hammerspoon
 
 brew install gh
+brew install lazygit
 brew install fvm
 brew tap leoafarias/fvm
 brew install fvm
