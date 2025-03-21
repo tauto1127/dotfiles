@@ -71,6 +71,7 @@ brew install --cask microsoft-edge
 brew install --cask omnifocus
 brew install --cask bitwarden
 brew install --cask hammerspoon
+brew install --cask zed
 
 brew install gh
 brew install lazygit
