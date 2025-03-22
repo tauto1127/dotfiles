@@ -72,6 +72,7 @@ brew install --cask omnifocus
 brew install --cask bitwarden
 brew install --cask hammerspoon
 brew install --cask zed
+brew install --cask kobo
 
 brew install gh
 brew install lazygit
