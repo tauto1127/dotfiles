@@ -6,6 +6,20 @@ BY='\033[43m]'
 set -e
 # apt, brew(mac)
 PkgType=''
+AUTO_YES=false
+
+# コマンドライン引数の処理
+while getopts "Y" opt; do
+  case $opt in
+    Y)
+      AUTO_YES=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
 
 function installShellEssentials() {
     set +e
@@ -77,8 +91,7 @@ function installFlutterEnvironment() {
 }
 
 function installNodeJs() {
-    read -r -n1 -p "Do you want to install node-js? (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "Do you want to install node-js? (y/N): "; then
         if [[ $PkgType == 'brew' ]]; then
             brew install nvm
 
@@ -124,22 +137,35 @@ function installMacApps() {
     done
 }
 
+function promptYesNo() {
+    local prompt=$1
+    local yn
+    if [[ $AUTO_YES == true ]]; then
+        return 0  # 自動的にYesを返す
+    fi
+    
+    read -r -n1 -p "$prompt" yn
+    echo ""
+    if [[ $yn = [yY] ]]; then
+        return 0 
+    else
+        return 1
+    fi
+}
+
 function init() {
     installShellEssentials
     installZshPlugins
 
-    read -n1 -r -p "開発環境をインストールしますか？ (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "開発環境をインストールしますか？ (y/N): "; then
         installEditors
     fi
 
-    read -n1 -r -p "Node.jsをインストールしますか？ (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "Node.jsをインストールしますか？ (y/N): "; then
         installNodeJs
     fi
 
-    read -n1 -r -p "Pyenvをインストールしますか？ (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "Pyenvをインストールしますか？ (y/N): "; then
         if [[ "$PkgType" == 'brew' ]]; then
             brew install pyenv
         elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
@@ -147,21 +173,24 @@ function init() {
         fi
     fi
 
-    read -n1 -r -p "アプリケーションをインストールしますか？ (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "アプリケーションをインストールしますか？ (y/N): "; then
         if [[ $PkgType == 'brew' ]]; then
             installMacApps
         fi
     fi
 
-    read -n1 -r -p "Ghをインストールしますか？ (y/N): " yn
-    if [[ $yn = [yY] ]]; then
+    if [[ $AUTO_YES == true ]] || promptYesNo "Ghをインストールしますか？ (y/N): "; then
         if [[ $PkgType == 'brew' ]]; then
             brew install gh
+            if [[ $AUTO_YES == false ]]; then
+                gh auth login
+            fi
             gh auth login
         elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
             sudo apt install gh -y
-            gh auth login
+            if [[ $AUTO_YES == false ]]; then
+                gh auth login
+            fi
         fi
     fi
 
