@@ -76,7 +76,6 @@ brew install --cask kobo
 
 brew install gh
 brew install lazygit
-brew install fvm
 brew tap leoafarias/fvm
 brew install fvm
 brew install cocoapods
