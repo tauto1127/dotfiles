@@ -26,7 +26,8 @@ function installShellEssentials() {
     if [[ $PkgType == 'brew' ]]; then
         if ! (type "brew" >/dev/null); then
             echo "${Y}install brew"
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" --unattended
+            # unattendedでインストールすると，確認が出なくなる
         fi
     fi
 
@@ -104,6 +105,11 @@ function installNodeJs() {
     fi
 }
 
+function installUv() {
+  # On macOS and Linux.
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+}
+
 function installMacApps() {
     declare -A macApps=(
         ["alt-tab"]=""
@@ -129,6 +135,7 @@ function installMacApps() {
         ["hammerspoon"]="グローバルショートカット作るのに使う"
         ["zed"]=""
         ["kobo"]=""
+        ["spotify"]""
     )
 
     for app in "${!macApps[@]}"; do
@@ -192,6 +199,10 @@ function init() {
                 gh auth login
             fi
         fi
+    fi
+
+    if [[ $AUTO_YES == true ]] || promptYesNo "uvをインストールしますか？ (y/N): "; then
+        installUv
     fi
 
     echo "${BY}Link dotfiles${N}"
