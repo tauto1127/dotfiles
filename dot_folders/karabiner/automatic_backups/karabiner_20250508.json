@@ -58,7 +58,6 @@
                         "product_id": 19,
                         "vendor_id": 12901
                     },
-                    "ignore": true,
                     "simple_modifications": [
                         {
                             "from": { "key_code": "japanese_pc_nfer" },
