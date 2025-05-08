@@ -22,6 +22,8 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- This is where you actually apply your config choices
 config.color_scheme = "tokyonight"
+-- ウィンドウを閉じてもアプリを終了しない
+config.quit_when_all_windows_are_closed = false
 
 -- ウィンドウタイトルのカスタマイズ
 config.window_decorations = "TITLE | RESIZE"
