@@ -1,5 +1,8 @@
 ---@diagnostic disable: param-type-mismatch
 local nocode = vim.g.vscode == nil
+if not nocode then
+  vim.g.vscode = true
+end
 
 require("vim_pluginmanager")
 
@@ -43,7 +46,9 @@ if nocode then
   table.insert(plugins, "hrsh7th/nvim-cmp")
   table.insert(plugins, require("plugins/copilot-cmp"))
   table.insert(plugins, require("theme/tokyonight"))
-  table.insert(plugins, require("plugins/avante"))
+  -- table.insert(plugins, require("plugins/avante"))
+  table.insert(plugins, require("plugins/code-companion"))
+
   table.insert(plugins, {
     "lervag/vimtex",
     lazy = false,
@@ -98,10 +103,10 @@ end
 
 require("lazy").setup(plugins)
 
--- copilotでmarkdownを使う
-vim.g.copilot_filetypes = { markdown = true }
 
 if nocode then
+  -- copilotでmarkdownを使う
+  vim.g.copilot_filetypes = { markdown = true }
   require("linter_formatter")
   require("plugins/lsp-cmp-mason")
   require("vim_commands")
