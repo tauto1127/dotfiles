@@ -34,7 +34,12 @@
     "gitlens.advanced.messages": {
         "suppressCreatePullRequestPrompt": true
     },
-    "cursor.cpp.disabledLanguages": [],
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "markdown",
+        "scminput",
+        "python"
+    ],
     "terminal.explorerKind": "external",
     "terminal.external.linuxExec": "zsh",
     "terminal.integrated.tabs.title": "${process}-${task}",
@@ -51,9 +56,9 @@
     "github.copilot.enable": {
         "*": true,
         "plaintext": false,
-        "markdown": false,
+        "markdown": true,
         "scminput": false,
-        "python": false
+        "python": true
     },
     "discord.idleTimeout": 600,
     "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
@@ -75,44 +80,45 @@
     "workbench.iconTheme": "catppuccin-mocha",
     "editor.minimap.enabled": false,
     "hediet.vscode-drawio.resizeImages": null,
-    "mcp": {
-        "inputs": [],
-        "servers": {
-            "mcp-server-time": {
-                "command": "python",
-                "args": [
-                    "-m",
-                    "mcp_server_time",
-                    "--local-timezone=America/Los_Angeles"
-                ],
-                "env": {}
-            },
-            "obsidian-mcp-tools": {
-                "command": "/Users/takuto1127/main/.obsidian_mac/plugins/mcp-tools/bin/mcp-server",
-                "env": {
-                    "OBSIDIAN_API_KEY": "112c3e9c86bbe401b6237d6701e12729a83ac04d7a9c81bcb4c5dea634eb0e48"
-                }
-            },
-            "postgres": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "--network=host",
-                    "mcp/postgres",
-                    "postgresql://postgres:mysecretpassword@localhost:5432"
-                ]
-            },
-            "omnifocus": {
-                "command": "npx",
-                "args": [
-                    "-y",
-                    "omnifocus-mcp"
-                ]
-            }
-        }
-    },
     "leetcode.workspaceFolder": "/Users/takuto1127/.leetcode",
-    "leetcode.defaultLanguage": "python3"
+    "leetcode.defaultLanguage": "pythogv",
+    "window.commandCenter": 1,
+    "cSpell.userWords": [
+        "dists",
+        "jcenter",
+        "prefs",
+        "stdlib"
+    ],
+    "debug.javascript.debugByLinkOptions": "on",
+    "terminal.integrated.allowChords": false,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "git.confirmSync": false,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.nextEditSuggestions.fixes": true,
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.agent.thinkingTool": true,
+    "markdown.marp.html": "all",
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.pdf": "default"
+    },
+    "explorer.fileNesting.patterns": {
+        "*.ts": "${capture}.js",
+        "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+        "*.jsx": "${capture}.js",
+        "*.tsx": "${capture}.ts",
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+        "pubspec.yaml": "pubspec.lock,pubspec_overrides.yaml,.packages,.flutter-plugins,.flutter-plugins-dependencies,.metadata",
+        "*.dart": "${capture}.g.dart",
+        "*.sqlite": "${capture}.${extname}-*",
+        "*.db": "${capture}.${extname}-*",
+        "*.sqlite3": "${capture}.${extname}-*",
+        "*.db3": "${capture}.${extname}-*",
+        "*.sdb": "${capture}.${extname}-*",
+        "*.s3db": "${capture}.${extname}-*"
+    },
+    "gitlens.advanced.similarityThreshold": 50,
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "githubPullRequests.pullBranch": "never",
 }

@@ -14,6 +14,28 @@
         "command": "workbench.action.toggleSidebarVisibility",
         "when": "explorerViewletVisible && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     },
+    // // サジェストでの移動のための明示的なバインディング
+    // {
+    //     "key": "ctrl+n",
+    //     "command": "selectNextSuggestion",
+    //     "when": "suggestWidgetVisible && textInputFocus"
+    // },
+    // {
+    //     "key": "ctrl+p",
+    //     "command": "selectPrevSuggestion",
+    //     "when": "suggestWidgetVisible && textInputFocus"
+    // },
+    // タブの切り替え
+    // {
+    //     "key": "ctrl+n",
+    //     "command": "workbench.action.nextEditor",
+    //     "when": "!suggestWidgetVisible && !quickOpenVisible && !inSnippetMode"
+    // },
+    // {
+    //     "key": "ctrl+p",
+    //     "command": "workbench.action.previousEditor",
+    //     "when": "!suggestWidgetVisible && !quickOpenVisible && !inSnippetMode"
+    // },
     // サイドバーフォーカストグル(サイドバーは表示したまま，フォーカスを切り替え)
     //{
     //    "key": "ctrl+h",
@@ -136,5 +158,9 @@
         "key": "ctrl+i",
         "command": "toggleSuggestionDetails",
         "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "cmd+i",
+        "command": "composerMode.agent"
     },
 ]

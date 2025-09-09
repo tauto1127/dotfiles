@@ -25,8 +25,6 @@ vim.api.nvim_set_keymap("n", "to", ":ToggleTerm<cr>", { noremap = true, silent =
 --タブを閉じる
 vim.api.nvim_set_keymap("n", "<C-x>", ":tabclose<cr>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<C-c>", ":CopilotChatToggle<cr>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-a>", ":AvanteAsk<cr>", { noremap = true, silent = true })
 
 -- <C-w> 系を Vim Tmux Navigator に移譲する
 vim.api.nvim_set_keymap("n", "<C-w>h", "<cmd>TmuxNavigateLeft<cr>", { noremap = true, silent = true })

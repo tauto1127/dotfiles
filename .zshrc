@@ -280,3 +280,10 @@ if [ -f '/Users/takuto/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto/g
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/takuto/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/completion.zsh.inc'; fi
+# tmuxを自動で起動する
+if ["$TMUX" = ""]; then
+  tmux attach -t default || tmux new -s default
+else
+  echo "tmux is not installed or already in a tmux session."
+fi
+

@@ -17,8 +17,7 @@ COPY  . /home/$USERNAME
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-RUN bash aptInstall.sh && \
-    bash _installNodeJs.sh && \
+RUN bash aptInstall.sh -Y&& \
     echo chsh -s /bin/zsh
 
 CMD ["/bin/zsh"]
