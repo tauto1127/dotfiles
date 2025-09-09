@@ -78,7 +78,8 @@ lspconfig.clangd.setup({
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--cross-file-rename",
-    "--compile-commands-dir=build", -- ここを使うとプロジェクト直下に symlink を置かなくてOK
+    -- 許可するドライバを広めに指定（em++ / wasi-sdk などのクロスツールチェイン対応）
+    "--query-driver=/usr/bin/*,/usr/local/bin/*,**/emsdk/**/em++,**/emsdk/**/emcc,**/wasi-sdk/**/bin/*",
   },
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   filetypes = { "c", "cpp", "objc", "objcpp" },
@@ -89,6 +90,57 @@ lspconfig.clangd.setup({
     "CMakeLists.txt",
     ".git"
   ),
+  on_new_config = function(new_config, new_root_dir)
+    local util = require("lspconfig").util
+    local path = util.path
+    local function exists(p)
+      return p and path.exists(p)
+    end
+
+    local function join(...)
+      return table.concat({ ... }, "/"):gsub("//+", "/")
+    end
+
+    -- 探索順:
+    -- 1) <root>/compile_commands.json
+    -- 2) <root>/build/compile_commands.json
+    -- 3) <root>/build/*/compile_commands.json （colcon/ROS2 など）
+    local db_dir = nil
+    if exists(join(new_root_dir, "compile_commands.json")) then
+      db_dir = new_root_dir
+    elseif exists(join(new_root_dir, "build/compile_commands.json")) then
+      db_dir = join(new_root_dir, "build")
+    else
+      local build_dir = join(new_root_dir, "build")
+      local handle = vim.loop.fs_scandir(build_dir)
+      if handle then
+        while true do
+          local name, t = vim.loop.fs_scandir_next(handle)
+          if not name then break end
+          if t == "directory" and exists(join(build_dir, name, "compile_commands.json")) then
+            db_dir = join(build_dir, name)
+            break
+          end
+        end
+      end
+    end
+
+    if db_dir then
+      -- 既存のcmdをコピーし、--compile-commands-dir が無ければ追加
+      local cmd = vim.deepcopy(new_config.cmd or { "clangd" })
+      local has_flag = false
+      for _, v in ipairs(cmd) do
+        if v:match("^%-%-compile%-commands%-dir=") or v == "--compile-commands-dir" then
+          has_flag = true
+          break
+        end
+      end
+      if not has_flag then
+        table.insert(cmd, "--compile-commands-dir=" .. db_dir)
+      end
+      new_config.cmd = cmd
+    end
+  end,
 })
 require("mason").setup()
 require("mason-lspconfig").setup({
