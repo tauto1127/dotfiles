@@ -21,7 +21,7 @@
         "**/.vscode": true,
         "**/.vs": true
     },
-    "workbench.colorTheme": "SynthWave '84",
+    "workbench.colorTheme": "One Monokai",
     "dart.lineLength": 140,
     "synthwave84.brightness": 0.5,
     "editor.suggest.filterGraceful": false,
@@ -29,7 +29,7 @@
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
     "vscode-neovim.neovimExecutablePaths.linux": "vim",
     "vscode-neovim.neovimExecutablePaths.win32": "vim",
-    "python.defaultInterpreterPath": "python3",
+    "python.defaultInterpreterPath": "/Users/takuto1127/.pyenv/versions/3.10.16/bin/python",
     "dart.devToolsBrowser": "default",
     "gitlens.advanced.messages": {
         "suppressCreatePullRequestPrompt": true
@@ -49,12 +49,70 @@
     "terminal.external.osxExec": "",
     "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace, MesloLGS NF",
     "github.copilot.enable": {
-        "*": false,
+        "*": true,
         "plaintext": false,
         "markdown": false,
-        "scminput": false
+        "scminput": false,
+        "python": false
     },
     "discord.idleTimeout": 600,
     "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
-    "lldb.launch.expressions": "native"
+    "lldb.launch.expressions": "native",
+    "print.folder.fileNames": true,
+    "print.folder.include": [],
+    "print.folder.exclude": [
+        "{bin,obj,out}",
+        "node_modules",
+        "data",
+        "**/*.{bin,exe,dll,hex,pdb,pdf,pfx,png,jpg,gif,bmp,suo,design}"
+    ],
+    "print.folder.maxLines": 1200,
+    "print.folder.maxFiles": 30,
+    "print.folder.includeFileList": false,
+    "cursor.cpp.enablePartialAccepts": true,
+    "cursor.chat.showSuggestedFiles": true,
+    "redhat.telemetry.enabled": true,
+    "workbench.iconTheme": "catppuccin-mocha",
+    "editor.minimap.enabled": false,
+    "hediet.vscode-drawio.resizeImages": null,
+    "mcp": {
+        "inputs": [],
+        "servers": {
+            "mcp-server-time": {
+                "command": "python",
+                "args": [
+                    "-m",
+                    "mcp_server_time",
+                    "--local-timezone=America/Los_Angeles"
+                ],
+                "env": {}
+            },
+            "obsidian-mcp-tools": {
+                "command": "/Users/takuto1127/main/.obsidian_mac/plugins/mcp-tools/bin/mcp-server",
+                "env": {
+                    "OBSIDIAN_API_KEY": "112c3e9c86bbe401b6237d6701e12729a83ac04d7a9c81bcb4c5dea634eb0e48"
+                }
+            },
+            "postgres": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "--network=host",
+                    "mcp/postgres",
+                    "postgresql://postgres:mysecretpassword@localhost:5432"
+                ]
+            },
+            "omnifocus": {
+                "command": "npx",
+                "args": [
+                    "-y",
+                    "omnifocus-mcp"
+                ]
+            }
+        }
+    },
+    "leetcode.workspaceFolder": "/Users/takuto1127/.leetcode",
+    "leetcode.defaultLanguage": "python3"
 }

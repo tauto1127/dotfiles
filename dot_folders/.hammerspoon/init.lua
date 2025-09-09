@@ -45,10 +45,35 @@ local open_obsidian = function()
   end
 end
 
+local open_omnifocus = function()
+  local appname = "OmniFocus"
+  local app = hs.application.get(appname)
+
+  if app == nil or app:isHidden() then
+    hs.application.launchOrFocus(appname)
+  else
+    if app:isFrontmost() then
+      app:hide()
+    else
+      app:activate()
+    end
+  end
+end
+
 double_press.timeFrame = 0.3
 double_press.action = open_obsidian
 
 -- ticktick
 hs.hotkey.bind({ "ctrl", "cmd" }, "t", function()
   open_ticktick()
+end)
+
+-- wezterm
+hs.hotkey.bind({ "alt" }, "space", function()
+  open_wezterm()
+end)
+
+-- omnifocus
+hs.hotkey.bind({ "ctrl", "cmd" }, "o", function()
+  open_omnifocus()
 end)

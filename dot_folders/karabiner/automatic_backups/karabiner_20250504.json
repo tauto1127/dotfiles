@@ -58,7 +58,6 @@
                         "product_id": 19,
                         "vendor_id": 12901
                     },
-                    "ignore": true,
                     "simple_modifications": [
                         {
                             "from": { "key_code": "japanese_pc_nfer" },
@@ -90,16 +89,7 @@
             ],
             "name": "Default profile",
             "selected": true,
-            "simple_modifications": [
-                {
-                    "from": { "key_code": "right_command" },
-                    "to": [{ "key_code": "return_or_enter" }]
-                }
-            ],
-            "virtual_hid_keyboard": {
-                "country_code": 1,
-                "keyboard_type_v2": "jis"
-            }
+            "virtual_hid_keyboard": { "country_code": 1 }
         }
     ]
 }

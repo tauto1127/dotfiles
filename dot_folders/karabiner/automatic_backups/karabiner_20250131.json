@@ -58,7 +58,6 @@
                         "product_id": 19,
                         "vendor_id": 12901
                     },
-                    "ignore": true,
                     "simple_modifications": [
                         {
                             "from": { "key_code": "japanese_pc_nfer" },
@@ -73,33 +72,11 @@
                 {
                     "identifiers": { "is_keyboard": true },
                     "ignore": true
-                },
-                {
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "product_id": 33,
-                        "vendor_id": 1278
-                    },
-                    "simple_modifications": [
-                        {
-                            "from": { "key_code": "right_option" },
-                            "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
-                        }
-                    ]
                 }
             ],
             "name": "Default profile",
             "selected": true,
-            "simple_modifications": [
-                {
-                    "from": { "key_code": "right_command" },
-                    "to": [{ "key_code": "return_or_enter" }]
-                }
-            ],
-            "virtual_hid_keyboard": {
-                "country_code": 1,
-                "keyboard_type_v2": "jis"
-            }
+            "virtual_hid_keyboard": { "country_code": 1 }
         }
     ]
 }

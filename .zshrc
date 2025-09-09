@@ -5,6 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export ANTHROPIC_API_KEY=
+
 #alias tmux="tmux -u2"
 
 ## tmuxの自動起動
@@ -209,8 +211,20 @@ if uname -a | grep -sq "Darwin"; then
 	#
 	# エイリアスの設定 
 	alias rustbook='open -a "Microsoft Edge" ~/Code/book-rust/book/index.html'
-	
-fi #MAC終わり
+	eval "$(pyenv init -)"
+
+  # openjdk用
+  export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+  [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+  . "$HOME/.local/bin/env"
+  export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+  export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+  export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+elif uname -a | grep -sq "Linux"; then
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi 
 
 alias vi="nvim"
 alias vim="nvim"
@@ -260,3 +274,9 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/takuto/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/takuto/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/completion.zsh.inc'; fi

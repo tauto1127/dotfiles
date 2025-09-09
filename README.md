@@ -1,9 +1,12 @@
 # dotfiles
-debian系のみ対応
+macos
+- installer_mac.sh
+- vscode_mac.sh
 
+debian
 - aptInstall.shを実行
 - nodejs手動
-
+- 
 参考：https://tech.smartcamp.co.jp/entry/setup-by-dotfiles
 # docker
 https://hub.docker.com/repository/docker/takuto1127/dotfiles/general

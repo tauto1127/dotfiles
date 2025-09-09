@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     vim.o.titlestring = vim.fn.expand("%:t") .. " - NVIM"
   end,
 })
+vim.api.nvim_set_option("scrolloff", 8)
 
 --conceallevel
 --obsidian-nvimで指定された
