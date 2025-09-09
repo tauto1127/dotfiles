@@ -48,6 +48,9 @@ if nocode then
   table.insert(plugins, require("theme/tokyonight"))
   -- table.insert(plugins, require("plugins/avante"))
   table.insert(plugins, require("plugins/code-companion"))
+  -- cmake
+  table.insert(plugins, require("plugins/cmake-tools"))
+
 
   table.insert(plugins, {
     "lervag/vimtex",
