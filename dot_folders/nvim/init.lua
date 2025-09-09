@@ -101,7 +101,6 @@ if nocode then
 
   -- statusばーのプラグイン
   table.insert(plugins, require("plugins/lualine_plugin"))
-  table.insert(plugins, require("plugins/obsidian_nvim"))
 end
 
 require("lazy").setup(plugins)
