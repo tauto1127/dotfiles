@@ -287,14 +287,9 @@
                         "vendor_id": 12901
                     },
                     "ignore": false
-                },
-                {
-                    "identifiers": { "is_keyboard": true },
-                    "ignore": true
                 }
             ],
             "name": "Default profile",
-            "selected": true,
             "virtual_hid_keyboard": {
                 "country_code": 1,
                 "keyboard_type_v2": "jis"
@@ -375,6 +370,7 @@
                 ]
             },
             "name": "us keyboard",
+            "selected": true,
             "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
         }
     ]

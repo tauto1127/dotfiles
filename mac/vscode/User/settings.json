@@ -21,7 +21,24 @@
         "**/.vscode": true,
         "**/.vs": true
     },
-    "workbench.colorTheme": "One Monokai",
+    "workbench.colorTheme": "Tokyo Night",
+    "workbench.colorCustomizations": {
+        // インデントガイド（非アクティブ）
+        "editorIndentGuide.background1": "#3b4261",
+        "editorIndentGuide.background2": "#565f89",
+        "editorIndentGuide.background3": "#414868",
+        "editorIndentGuide.background4": "#24283b",
+        "editorIndentGuide.background5": "#1a1b26",
+        "editorIndentGuide.background6": "#16161e",
+
+        // アクティブなインデントガイド（明るめの差し色）
+        "editorIndentGuide.activeBackground1": "#7aa2f7",
+        "editorIndentGuide.activeBackground2": "#bb9af7",
+        "editorIndentGuide.activeBackground3": "#9ece6a",
+        "editorIndentGuide.activeBackground4": "#e0af68",
+        "editorIndentGuide.activeBackground5": "#f7768e",
+        "editorIndentGuide.activeBackground6": "#7dcfff"
+    },
     "dart.lineLength": 140,
     "synthwave84.brightness": 0.5,
     "editor.suggest.filterGraceful": false,
@@ -121,4 +138,32 @@
     "gitlens.advanced.similarityThreshold": 50,
     "workbench.secondarySideBar.defaultVisibility": "visible",
     "githubPullRequests.pullBranch": "never",
+    "geminicodeassist.project": "voltaic-edge-6j1cz",
+    "indentRainbow.indicatorStyle": "light",
+    "indentRainbow.lightIndicatorStyleLineWidth": 0.2,
+    "indentRainbow.ignoreLinePatterns": [
+        "^\\s*#.*",  // プリプロセッサ行を無視
+        "/[ \t]* [*]/g",
+        "/[ \t]+[/]{2}/g"
+    ],
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "geminicodeassist.displayInlineContextHint": false,
+    "git.blame.editorDecoration.enabled": true,
+    "security.promptForLocalFileProtocolHandling": false,
+    "chat.mcp.gallery.enabled": true,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "chat.agent.maxRequests": 300,
+    "chat.tools.terminal.autoApprove": {
+        "make": true
+    },
+    "latex-workshop.latex.autoBuild.run": "never",
 }

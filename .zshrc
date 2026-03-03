@@ -133,6 +133,8 @@ if uname -a | grep -sq "Darwin"; then
 	export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 	export PATH="$PATH:/opt/homebrew/bin"
 
+  # inkscape
+  export PATH="/Applications/Inkscape.app/Contents/MacOS:$PATH"
   export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
@@ -274,16 +276,21 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
+# # tmuxを自動で起動する
+# if ["$TMUX" = ""]; then
+#   tmux attach -t default || tmux new -s default
+# else
+#   echo "tmux is not installed or already in a tmux session."
+# fi
+
+# lego mind storms ev3
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
+alias find="gfind"
+export PATH=/usr/local/texlive/2025/bin/universal-darwin/:$PATH
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/takuto/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/takuto1127/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto1127/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/takuto/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto/google-cloud-sdk/completion.zsh.inc'; fi
-# tmuxを自動で起動する
-if ["$TMUX" = ""]; then
-  tmux attach -t default || tmux new -s default
-else
-  echo "tmux is not installed or already in a tmux session."
-fi
-
+if [ -f '/Users/takuto1127/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto1127/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
