@@ -9,6 +9,19 @@ capabilities.general = capabilities.general or {}
 capabilities.general.positionEncodings = { "utf-16" }
 capabilities.offsetEncoding = { "utf-16" }
 
+local mason_servers = {
+  "eslint",
+  "ts_ls",
+  "docker_compose_language_service",
+  "dockerls",
+  "pylsp",
+  "gopls",
+  "kotlin_language_server",
+  "clangd",
+  "omnisharp",
+  "lua_ls",
+}
+
 local function has_cmd_arg(cmd, prefix)
   for _, arg in ipairs(cmd) do
     if vim.startswith(arg, prefix) then
@@ -166,7 +179,7 @@ cmp.setup({
 
 lspconfig.eslint.setup({})
 -- require("lspconfig").csharp_ls.setup({ capabilities = capabilities })
-lspconfig.tsserver.setup({})
+lspconfig.ts_ls.setup({})
 lspconfig.docker_compose_language_service.setup({})
 lspconfig.dockerls.setup({})
 lspconfig.pylsp.setup({})
@@ -250,6 +263,7 @@ lspconfig.lua_ls.setup({
 --require("lua.lsp-cmp-mason")
 require("mason").setup()
 require("mason-lspconfig").setup({
+  ensure_installed = mason_servers,
   automatic_enable = false
 })
 -- require("mason-lspconfig").setup_handlers({
