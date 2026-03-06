@@ -18,24 +18,30 @@ local plugins = {
 }
 
 if nocode then
+  -- no-neck 中央に寄せるやつテキストを
+  table.insert(plugins, require("plugins/no-neck-pain"))
   -- remote developemnt
   table.insert(plugins, require("plugins/remote-dev"))
-  table.insert(plugins, require("plugins/distant"))
+  -- devcontainer
+  table.insert(plugins, require("plugins/devcontainer"))
+  -- remoteのファイルを編集できるらしい
+  -- table.insert(plugins, require("plugins/distant"))
+  --
   -- diffview
   table.insert(plugins, require("plugins/diff-view-nvim"))
   -- いい感じのoutline表示するやつ
   table.insert(plugins, require("plugins/aerial"))
   table.insert(plugins, require("plugins/nvim-treesitter_plugin"))
-  table.insert(plugins, "stevearc/dressing.nvim") -- telescopeの検索のui
-  -- buffer manager
+  -- telescopeの検索のui
+  table.insert(plugins, "stevearc/dressing.nvim")
+  -- buffer manager 最強
   table.insert(plugins, require("plugins/buffer_manager-nvim"))
   -- いい感じにウィンドウ？サイズを変更してくれるやつ
   -- table.insert(plugins, require("plugins/focus-nvim"))
-  table.insert(plugins, "tpope/vim-fugitive")
+  -- table.insert(plugins, "tpope/vim-fugitive")
   table.insert(plugins, "airblade/vim-gitgutter")
+  -- HTMLのタグを自動で閉じてくれるやつ
   table.insert(plugins, require("plugins/nvim-ts-autotag"))
-  -- 日本語ヘルプ
-  table.insert(plugins, "vim-jp/nvimdoc-ja")
   ----自動かっこ
   table.insert(plugins, "cohama/lexima.vim")
   table.insert(plugins, "akinsho/git-conflict.nvim")
@@ -96,9 +102,12 @@ if nocode then
   table.insert(plugins, "hrsh7th/cmp-path")
   table.insert(plugins, "hrsh7th/cmp-cmdline")
 
+  -- キーバインディングを教えてくれるプラグイン
+  table.insert(plugins, require("plugins/which-key"))
   -- statusばーのプラグイン
   table.insert(plugins, require("plugins/lualine_plugin"))
-  table.insert(plugins, require("plugins/obsidian_nvim"))
+  -- aibo(codex wrapperぷらぐいん)
+  table.insert(plugins, require("plugins/aibo-nvim"))
 end
 
 require("lazy").setup(plugins)

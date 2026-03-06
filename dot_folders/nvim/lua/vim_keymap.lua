@@ -40,12 +40,149 @@ vim.api.nvim_set_keymap("n", "<C-p>", ":tabprevious<cr>", { noremap = true, sile
 -- lspのキー配置
 -- -- 2. build-in LSP function
 -- keyboard shortcut
+local function normalize_locations(result)
+  if not result then
+    return {}
+  end
+  if vim.islist(result) then
+    return result
+  end
+  return { result }
+end
+
+local function collect_jumpable_locations(locations)
+  local jumpable = {}
+  for _, location in ipairs(locations) do
+    local uri = location.uri or location.targetUri
+    local range = location.range or location.targetSelectionRange or location.targetRange
+    if uri and range and range.start then
+      table.insert(jumpable, location)
+    end
+  end
+  return jumpable
+end
+
+local function get_client_path_mappings(client)
+  local mappings = {}
+  if not client or not client.config or type(client.config.cmd) ~= "table" then
+    return mappings
+  end
+
+  for _, arg in ipairs(client.config.cmd) do
+    if type(arg) == "string" and vim.startswith(arg, "--path-mappings=") then
+      local mapping_value = arg:sub(#"--path-mappings=" + 1)
+      for pair in string.gmatch(mapping_value, "([^,]+)") do
+        local remote, local_path = pair:match("^(.-)=(.+)$")
+        if remote and local_path then
+          table.insert(mappings, {
+            remote = vim.fs.normalize(remote):gsub("/+$", ""),
+            local_path = vim.fs.normalize(local_path):gsub("/+$", ""),
+          })
+        end
+      end
+    end
+  end
+
+  return mappings
+end
+
+local function remap_location_uri(location, client)
+  local uri = location.uri or location.targetUri
+  if not uri then
+    return location
+  end
+
+  local ok, path = pcall(vim.uri_to_fname, uri)
+  if not ok or path == "" or vim.loop.fs_stat(path) then
+    return location
+  end
+
+  local normalized_path = vim.fs.normalize(path)
+  for _, mapping in ipairs(get_client_path_mappings(client)) do
+    if vim.startswith(normalized_path, mapping.remote) then
+      local remapped_path = mapping.local_path .. normalized_path:sub(#mapping.remote + 1)
+      if vim.loop.fs_stat(remapped_path) then
+        local remapped_uri = vim.uri_from_fname(remapped_path)
+        local updated = vim.deepcopy(location)
+        if updated.uri then
+          updated.uri = remapped_uri
+        end
+        if updated.targetUri then
+          updated.targetUri = remapped_uri
+        end
+        return updated
+      end
+    end
+  end
+
+  return location
+end
+
+local function safe_jump(method)
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request_all(0, method, params, function(results)
+    local all_locations = {}
+    local items = {}
+    local jump_location = nil
+    local jump_encoding = nil
+
+    for client_id, response in pairs(results) do
+      local client = vim.lsp.get_client_by_id(client_id)
+      local offset_encoding = client and client.offset_encoding or "utf-16"
+      local locations = {}
+      for _, location in ipairs(collect_jumpable_locations(normalize_locations(response.result))) do
+        table.insert(locations, remap_location_uri(location, client))
+      end
+
+      if response.error then
+        vim.notify(
+          string.format("%s failed: %s", client and client.name or ("client " .. client_id), response.error.message),
+          vim.log.levels.WARN
+        )
+      end
+
+      if #locations > 0 then
+        if not jump_location then
+          jump_location = locations[1]
+          jump_encoding = offset_encoding
+        end
+        vim.list_extend(all_locations, locations)
+        vim.list_extend(items, vim.lsp.util.locations_to_items(locations, offset_encoding))
+      end
+    end
+
+    if jump_location then
+      if #all_locations == 1 then
+        local ok, result = pcall(vim.lsp.util.show_document, jump_location, jump_encoding, { focus = true })
+        if not ok then
+          vim.notify("LSP jump failed: " .. tostring(result), vim.log.levels.WARN)
+        elseif result ~= true then
+          vim.notify("LSP jump failed: could not open target location", vim.log.levels.WARN)
+        end
+        return
+      end
+
+      vim.fn.setqflist({}, " ", { title = "LSP locations", items = items })
+      vim.cmd("copen")
+      return
+    end
+
+    vim.notify("No valid LSP location found", vim.log.levels.WARN)
+  end)
+end
+
 vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
 vim.keymap.set("n", "gf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
 vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+vim.keymap.set("n", "gd", function()
+  safe_jump("textDocument/definition")
+end)
+vim.keymap.set("n", "gD", function()
+  safe_jump("textDocument/declaration")
+end)
+vim.keymap.set("n", "gi", function()
+  safe_jump("textDocument/implementation")
+end)
 -- vim.keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
 vim.keymap.set("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>")

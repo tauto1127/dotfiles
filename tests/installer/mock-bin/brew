@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'brew %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+
+mock_nvm_prefix="${MOCK_BREW_NVM_PREFIX:-$HOME/.mock-brew/opt/nvm}"
+
+ensure_mock_nvm() {
+  mkdir -p "$mock_nvm_prefix"
+  cat > "$mock_nvm_prefix/nvm.sh" <<'EOF'
+nvm() {
+  printf 'nvm %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+}
+EOF
+}
+
+if [[ "${1:-}" == "--prefix" && "${2:-}" == "nvm" ]]; then
+  ensure_mock_nvm
+  printf '%s\n' "$mock_nvm_prefix"
+  exit 0
+fi
+
+if [[ "${1:-}" == "install" ]]; then
+  for arg in "$@"; do
+    if [[ "$arg" == "nvm" ]]; then
+      ensure_mock_nvm
+      break
+    fi
+  done
+fi

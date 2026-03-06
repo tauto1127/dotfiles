@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'git %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+
+if [[ "${1:-}" != "clone" ]]; then
+  exit 0
+fi
+
+repo=""
+dest=""
+for arg in "$@"; do
+  case "$arg" in
+    clone) ;;
+    -*) ;;
+    *)
+      if [[ -z "$repo" ]]; then
+        repo="$arg"
+      elif [[ -z "$dest" ]]; then
+        dest="$arg"
+      fi
+      ;;
+  esac
+done
+
+if [[ -z "$repo" ]]; then
+  exit 0
+fi
+
+if [[ -z "$dest" ]]; then
+  base="${repo##*/}"
+  dest="${base%.git}"
+fi
+
+mkdir -p "$dest"
+
+if [[ "$dest" == "fonts" ]]; then
+  cat > "$dest/install.sh" <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+  chmod +x "$dest/install.sh"
+fi

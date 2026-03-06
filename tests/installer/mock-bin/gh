@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'gh %s\n' "$*" >> "${TEST_LOG_FILE:?}"

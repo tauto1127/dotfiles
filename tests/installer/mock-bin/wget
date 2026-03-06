@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'wget %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+
+if [[ "$*" == *"-O-"* ]]; then
+  cat <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+  exit 0
+fi
+
+echo "mock wget output"

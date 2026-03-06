@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'tar %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+
+cat > lazygit <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+chmod +x lazygit

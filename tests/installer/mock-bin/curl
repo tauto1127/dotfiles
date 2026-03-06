@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'curl %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+
+args="$*"
+if [[ "$args" == *"api.github.com/repos/jesseduffield/lazygit/releases/latest"* ]]; then
+  echo '{"tag_name":"v0.50.0"}'
+  exit 0
+fi
+
+if [[ "${1:-}" == "-Lo" ]]; then
+  out="${2:?}"
+  printf 'fake archive\n' > "$out"
+  exit 0
+fi
+
+if [[ "$args" == *"https://astral.sh/uv/install.sh"* ]]; then
+  cat <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+  exit 0
+fi
+
+if [[ "$args" == *"https://pyenv.run"* ]]; then
+  cat <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+  exit 0
+fi
+
+if [[ "$args" == *"raw.githubusercontent.com/nvm-sh/nvm"* ]]; then
+  cat <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p "${NVM_DIR:-$HOME/.nvm}"
+cat > "${NVM_DIR:-$HOME/.nvm}/nvm.sh" <<'INNER'
+nvm() {
+  printf 'nvm %s\n' "$*" >> "${TEST_LOG_FILE:?}"
+}
+INNER
+EOF
+  exit 0
+fi
+
+echo "mock curl output"

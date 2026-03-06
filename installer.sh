@@ -7,6 +7,7 @@ set -e
 # apt, brew(mac)
 PkgType=''
 AUTO_YES=false
+OS_RELEASE_FILE="${OS_RELEASE_FILE:-/etc/os-release}"
 
 # コマンドライン引数の処理
 while getopts "Y" opt; do
@@ -21,10 +22,37 @@ while getopts "Y" opt; do
   esac
 done
 
+function current_uname() {
+    if [[ -n "${UNAME_OVERRIDE:-}" ]]; then
+        echo "$UNAME_OVERRIDE"
+    else
+        uname -s
+    fi
+}
+
+function loadNvm() {
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+    if [[ "$PkgType" == 'brew' ]] && command -v brew >/dev/null 2>&1; then
+        local brew_prefix
+        brew_prefix="$(brew --prefix nvm 2>/dev/null || true)"
+        if [[ -n "$brew_prefix" && -s "$brew_prefix/nvm.sh" ]]; then
+            # shellcheck disable=SC1090
+            . "$brew_prefix/nvm.sh"
+        fi
+    fi
+
+    if ! command -v nvm >/dev/null 2>&1 && [[ -s "$NVM_DIR/nvm.sh" ]]; then
+        # shellcheck disable=SC1090
+        . "$NVM_DIR/nvm.sh"
+    fi
+
+    command -v nvm >/dev/null 2>&1
+}
+
 function installShellEssentials() {
-    set +e
     if [[ $PkgType == 'brew' ]]; then
-        if ! (type "brew" >/dev/null); then
+        if ! command -v brew >/dev/null 2>&1; then
             echo "${Y}install brew"
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" --unattended
             # unattendedでインストールすると，確認が出なくなる
@@ -32,46 +60,53 @@ function installShellEssentials() {
     fi
 
     echo "${BY}install zsh and wget${N}"
-    Packages=(zsh wget git autojump curl tmux figlet)
+    local packages=(zsh wget git autojump curl tmux figlet)
     if [[ $PkgType == 'brew' ]]; then
-        brew install "${Packages[@]}"
-    elif [[ "$PkgType" == 'apt' || "$PkgType" == 'apt' ]]; then
-        sudo apt install "${Packages[@]}" -y
+        brew install "${packages[@]}"
+    elif [[ "$PkgType" == 'apt' ]]; then
+        sudo apt install "${packages[@]}" -y
     fi
-    set -e
 }
 
 function installZshPlugins() {
-    set +e
-
     echo "${BY}install zsh plugins${N}"
+    local oh_my_zsh_dir="${ZSH:-$HOME/.oh-my-zsh}"
+    local zsh_custom="${ZSH_CUSTOM:-$oh_my_zsh_dir/custom}"
 
-    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    if [[ ! -d "$oh_my_zsh_dir" ]]; then
+        sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
 
-    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}"/plugins/zsh-autosuggestions
-    git clone --depth=1 https://github.com/jeffreytse/zsh-vi-mode "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}"/plugins/zsh-vi-mode
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
-    git clone --depth=1 https://github.com/powerline/fonts
+    mkdir -p "$zsh_custom/plugins" "$zsh_custom/themes"
 
-    cd fonts
-    ./install.sh
-    cd ..
+    if [[ ! -d "$zsh_custom/plugins/zsh-autosuggestions" ]]; then
+        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "$zsh_custom/plugins/zsh-autosuggestions"
+    fi
 
-    set -e
+    if [[ ! -d "$zsh_custom/plugins/zsh-vi-mode" ]]; then
+        git clone --depth=1 https://github.com/jeffreytse/zsh-vi-mode "$zsh_custom/plugins/zsh-vi-mode"
+    fi
+
+    if [[ ! -d "$zsh_custom/themes/powerlevel10k" ]]; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$zsh_custom/themes/powerlevel10k"
+    fi
+
+    (
+        cd fonts
+        ./install.sh
+    )
 }
 
 function installEditors() {
-    set +e
-
     echo "${BY}install neovim${N}"
     if [[ "$PkgType" == 'brew' ]]; then
         brew install neovim
         brew install lazygit
-    elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
-        apt install neovim -y
+    elif [[ "$PkgType" == 'apt' ]]; then
+        sudo apt install neovim -y
 
         # install lazygit
-        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')
         curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
         tar xf lazygit.tar.gz lazygit
         sudo install lazygit -D -t /usr/local/bin/
@@ -79,30 +114,32 @@ function installEditors() {
 }
 
 function installFlutterEnvironment() {
-    set +e
-
     echo "${BY}install flutter${N}"
     if [[ $PkgType == 'brew' ]]; then
         brew tap leoafarias/fvm
         brew install fvm
         brew install cocoapods
-    elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
+    elif [[ "$PkgType" == 'apt' ]]; then
         curl -fsSL https://fvm.app/install.sh | bash
     fi
 }
 
 function installNodeJs() {
-    if [[ $AUTO_YES == true ]] || promptYesNo "Do you want to install node-js? (y/N): "; then
-        if [[ $PkgType == 'brew' ]]; then
-            brew install nvm
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
-            nvm install --lts
-        elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-
-            nvm install --lts
-        fi
+    if [[ "$PkgType" == 'brew' ]]; then
+        mkdir -p "$NVM_DIR"
+        brew install nvm
+    elif [[ "$PkgType" == 'apt' ]]; then
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
     fi
+
+    if ! loadNvm; then
+        echo "Failed to load nvm after installation." >&2
+        return 1
+    fi
+
+    nvm install --lts
 }
 
 function installUv() {
@@ -111,35 +148,44 @@ function installUv() {
 }
 
 function installMacApps() {
-    declare -A macApps=(
-        ["alt-tab"]=""
-        ["raycast"]=""
-        ["iterm2"]=""
-        ["wezterm"]=""
-        ["amethyst"]=""
-        ["cursor"]=""
-        ["adguard"]=""
-        ["obsidian"]=""
-        ["rize"]=""
-        ["zotero"]=""
-        ["nextcloud"]=""
-        ["discord"]=""
-        ["visual-studio-code"]=""
-        ["docker"]=""
-        ["tailscale"]="VPN"
-        ["postman"]="API検証に便利なツール"
-        ["slack"]=""
-        ["microsoft-edge"]="推しブラウザ"
-        ["omnifocus"]=""
-        ["bitwarden"]=""
-        ["hammerspoon"]="グローバルショートカット作るのに使う"
-        ["zed"]=""
-        ["kobo"]=""
-        ["spotify"]""
+    local macApps=(
+        "alt-tab|"
+        "raycast|"
+        "iterm2|"
+        "wezterm|"
+        "amethyst|"
+        "cursor|"
+        "adguard|"
+        "obsidian|"
+        "rize|"
+        "zotero|"
+        "nextcloud|"
+        "discord|"
+        "visual-studio-code|"
+        "docker|"
+        "tailscale|VPN"
+        "postman|API検証に便利なツール"
+        "slack|"
+        "microsoft-edge|推しブラウザ"
+        "omnifocus|"
+        "bitwarden|"
+        "hammerspoon|グローバルショートカット作るのに使う"
+        "zed|"
+        "kobo|"
+        "spotify|"
     )
+    local app
+    local description
+    local entry
 
-    for app in "${!macApps[@]}"; do
-        echo -e "${BY}Installing ${app} - ${macApps[$app]}${N}"
+    for entry in "${macApps[@]}"; do
+        app="${entry%%|*}"
+        description="${entry#*|}"
+        if [[ -n "$description" ]]; then
+            echo -e "${BY}Installing ${app} - ${description}${N}"
+        else
+            echo -e "${BY}Installing ${app}${N}"
+        fi
         brew install --cask "$app"
     done
 }
@@ -175,7 +221,7 @@ function init() {
     if [[ $AUTO_YES == true ]] || promptYesNo "Pyenvをインストールしますか？ (y/N): "; then
         if [[ "$PkgType" == 'brew' ]]; then
             brew install pyenv
-        elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
+        elif [[ "$PkgType" == 'apt' ]]; then
             curl -fsSL https://pyenv.run | bash
         fi
     fi
@@ -192,8 +238,7 @@ function init() {
             if [[ $AUTO_YES == false ]]; then
                 gh auth login
             fi
-            gh auth login
-        elif [[ $PkgType == 'apt' || $PkgType == 'apt' ]]; then
+        elif [[ "$PkgType" == 'apt' ]]; then
             sudo apt install gh -y
             if [[ $AUTO_YES == false ]]; then
                 gh auth login
@@ -215,13 +260,13 @@ function init() {
 }
 
 # エントリーポイント
-if [[ "$(uname -s)" == "Darwin" ]]; then
+if [[ "$(current_uname)" == "Darwin" ]]; then
     PkgType='brew'
     init
-elif [[ "$(uname -s)" == "Linux" ]]; then
+elif [[ "$(current_uname)" == "Linux" ]]; then
     # Linux の場合、さらに /etc/os-release を利用して Ubuntu か Debian かを判定
-    if [ -f /etc/os-release ]; then
-        source /etc/os-release
+    if [ -f "$OS_RELEASE_FILE" ]; then
+        source "$OS_RELEASE_FILE"
         if [[ "$ID" == "ubuntu" ]]; then
             PkgType='apt'
             init
