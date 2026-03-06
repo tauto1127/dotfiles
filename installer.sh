@@ -8,6 +8,7 @@ set -e
 PkgType=''
 AUTO_YES=false
 OS_RELEASE_FILE="${OS_RELEASE_FILE:-/etc/os-release}"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # コマンドライン引数の処理
 while getopts "Y" opt; do
@@ -72,9 +73,11 @@ function installZshPlugins() {
     echo "${BY}install zsh plugins${N}"
     local oh_my_zsh_dir="${ZSH:-$HOME/.oh-my-zsh}"
     local zsh_custom="${ZSH_CUSTOM:-$oh_my_zsh_dir/custom}"
+    local fonts_install_script="$SCRIPT_DIR/fonts/install.sh"
 
     if [[ ! -d "$oh_my_zsh_dir" ]]; then
-        sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        RUNZSH=no CHSH=no KEEP_ZSHRC=yes ZSH="$oh_my_zsh_dir" \
+            sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
 
     mkdir -p "$zsh_custom/plugins" "$zsh_custom/themes"
@@ -91,10 +94,12 @@ function installZshPlugins() {
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$zsh_custom/themes/powerlevel10k"
     fi
 
-    (
-        cd fonts
-        ./install.sh
-    )
+    if [[ -x "$fonts_install_script" ]]; then
+        "$fonts_install_script"
+    else
+        echo "Missing fonts installer: $fonts_install_script" >&2
+        return 1
+    fi
 }
 
 function installEditors() {
@@ -138,7 +143,7 @@ function installNodeJs() {
         echo "Failed to load nvm after installation." >&2
         return 1
     fi
-
+    
     nvm install --lts
 }
 
@@ -251,7 +256,7 @@ function init() {
     fi
 
     echo "${BY}Link dotfiles${N}"
-    bash _link.sh
+    bash "$SCRIPT_DIR/_link.sh"
 
     figlet WELCOME
     echo "Please run ${Y}"
