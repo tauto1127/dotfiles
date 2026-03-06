@@ -150,6 +150,7 @@ function installEditors() {
         brew install lazygit
     elif [[ "$PkgType" == 'apt' ]]; then
         installNeovimLinux
+        sudo apt install clangd -y
 
         # install lazygit
         LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')

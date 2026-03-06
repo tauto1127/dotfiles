@@ -16,11 +16,20 @@ local mason_servers = {
   "dockerls",
   "pylsp",
   "gopls",
-  "kotlin_language_server",
-  "clangd",
-  "omnisharp",
   "lua_ls",
 }
+
+local function mason_supports_clangd()
+  local uname = vim.loop.os_uname()
+  if uname.sysname == "Linux" and (uname.machine == "aarch64" or uname.machine == "arm64") then
+    return false
+  end
+  return true
+end
+
+if mason_supports_clangd() then
+  table.insert(mason_servers, 8, "clangd")
+end
 
 local function has_cmd_arg(cmd, prefix)
   for _, arg in ipairs(cmd) do
