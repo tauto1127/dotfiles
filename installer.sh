@@ -9,6 +9,8 @@ PkgType=''
 AUTO_YES=false
 OS_RELEASE_FILE="${OS_RELEASE_FILE:-/etc/os-release}"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NVIM_INSTALL_DIR="${NVIM_INSTALL_DIR:-/opt}"
+NVIM_BIN_DIR="${NVIM_BIN_DIR:-/usr/local/bin}"
 
 # コマンドライン引数の処理
 while getopts "Y" opt; do
@@ -49,6 +51,45 @@ function loadNvm() {
     fi
 
     command -v nvm >/dev/null 2>&1
+}
+
+function detectLinuxArch() {
+    case "$(uname -m)" in
+        x86_64|amd64)
+            echo "x86_64"
+            ;;
+        aarch64|arm64)
+            echo "arm64"
+            ;;
+        *)
+            echo "Unsupported architecture: $(uname -m)" >&2
+            return 1
+            ;;
+    esac
+}
+
+function installNeovimLinux() {
+    local arch
+    local archive_base
+    local archive_name
+    local download_url
+    local temp_dir
+
+    arch="$(detectLinuxArch)"
+    archive_base="nvim-linux-${arch}"
+    archive_name="${archive_base}.tar.gz"
+    download_url="https://github.com/neovim/neovim/releases/latest/download/${archive_name}"
+    temp_dir="$(mktemp -d)"
+
+    curl -fLo "${temp_dir}/${archive_name}" "$download_url"
+    tar -xzf "${temp_dir}/${archive_name}" -C "$temp_dir"
+
+    sudo mkdir -p "$NVIM_INSTALL_DIR" "$NVIM_BIN_DIR"
+    sudo rm -rf "${NVIM_INSTALL_DIR:?}/${archive_base}"
+    sudo mv "${temp_dir}/${archive_base}" "${NVIM_INSTALL_DIR}/${archive_base}"
+    sudo ln -sf "${NVIM_INSTALL_DIR}/${archive_base}/bin/nvim" "${NVIM_BIN_DIR}/nvim"
+
+    rm -rf "$temp_dir"
 }
 
 function installShellEssentials() {
@@ -108,7 +149,7 @@ function installEditors() {
         brew install neovim
         brew install lazygit
     elif [[ "$PkgType" == 'apt' ]]; then
-        sudo apt install neovim -y
+        installNeovimLinux
 
         # install lazygit
         LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')

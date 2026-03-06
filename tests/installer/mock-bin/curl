@@ -9,7 +9,7 @@ if [[ "$args" == *"api.github.com/repos/jesseduffield/lazygit/releases/latest"* 
   exit 0
 fi
 
-if [[ "${1:-}" == "-Lo" ]]; then
+if [[ "${1:-}" == "-Lo" || "${1:-}" == "-fLo" ]]; then
   out="${2:?}"
   printf 'fake archive\n' > "$out"
   exit 0

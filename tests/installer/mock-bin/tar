@@ -3,8 +3,37 @@ set -euo pipefail
 
 printf 'tar %s\n' "$*" >> "${TEST_LOG_FILE:?}"
 
-cat > lazygit <<'EOF'
+target_dir="."
+archive_name=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -C)
+      target_dir="${2:?}"
+      shift 2
+      ;;
+    -*)
+      shift
+      ;;
+    *)
+      archive_name="$1"
+      shift
+      ;;
+  esac
+done
+
+if [[ "$archive_name" == *"nvim-linux-"*".tar.gz" ]]; then
+  archive_base="$(basename "$archive_name" .tar.gz)"
+  mkdir -p "$target_dir/$archive_base/bin"
+  cat > "$target_dir/$archive_base/bin/nvim" <<'EOF'
 #!/usr/bin/env bash
 exit 0
 EOF
-chmod +x lazygit
+  chmod +x "$target_dir/$archive_base/bin/nvim"
+else
+  cat > lazygit <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+  chmod +x lazygit
+fi

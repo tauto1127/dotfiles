@@ -75,13 +75,16 @@ EOF
     export PATH="$work_dir/tests/installer/mock-bin:$PATH"
     export UNAME_OVERRIDE="Linux"
     export OS_RELEASE_FILE="$os_release_file"
+    export NVIM_INSTALL_DIR="$home_dir/.local/opt"
+    export NVIM_BIN_DIR="$home_dir/.local/bin"
     unset ZSH ZSH_CUSTOM
     bash ./installer.sh -Y
   )
 
   assert_contains "$log_file" "sudo apt install zsh wget git autojump curl tmux figlet -y"
   assert_contains "$log_file" "wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-  assert_contains "$log_file" "sudo apt install neovim -y"
+  assert_contains "$log_file" "curl -fLo"
+  assert_contains "$log_file" "nvim-linux-"
   assert_contains "$log_file" "sudo apt install gh -y"
   assert_contains "$log_file" "curl -LsSf https://astral.sh/uv/install.sh"
   assert_contains "$log_file" "nvm install --lts"
@@ -89,6 +92,10 @@ EOF
 
   assert_symlink "$home_dir/.zshrc"
   assert_symlink "$home_dir/.config/nvim"
+  if [[ ! -x "$home_dir/.local/bin/nvim" ]]; then
+    echo "assertion failed: expected installed nvim binary"
+    exit 1
+  fi
   if [[ -e "$home_dir/.zprofile" || -L "$home_dir/.zprofile" ]]; then
     echo "assertion failed: unexpected .zprofile symlink"
     exit 1
