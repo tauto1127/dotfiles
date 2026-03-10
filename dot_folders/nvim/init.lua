@@ -1,5 +1,7 @@
 ---@diagnostic disable: param-type-mismatch
-if vim.env.TERM_PROGRAM == "WezTerm" and vim.fn.executable("pbcopy") == 0 then
+if vim.env.TMUX and vim.fn.executable("tmux") == 1 then
+  vim.g.clipboard = "tmux"
+elseif vim.fn.executable("pbcopy") == 0 then
   local osc52 = require("vim.ui.clipboard.osc52")
   local clipboard_cache = {
     lines = nil,
