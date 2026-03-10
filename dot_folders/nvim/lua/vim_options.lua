@@ -1,7 +1,3 @@
-if vim.env.TERM_PROGRAM == "WezTerm" and vim.fn.executable("pbcopy") == 0 then
-  vim.g.clipboard = "osc52"
-end
-
 vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
 --インデント
 vim.opt.tabstop = 2

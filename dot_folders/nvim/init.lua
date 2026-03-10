@@ -1,4 +1,8 @@
 ---@diagnostic disable: param-type-mismatch
+if vim.fn.executable("pbcopy") == 0 then
+  vim.g.clipboard = "osc52"
+end
+
 local nocode = vim.g.vscode == nil
 if not nocode then
   vim.g.vscode = true
