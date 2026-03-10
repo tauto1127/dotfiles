@@ -1,12 +1,20 @@
 return {
   "nvim-telescope/telescope.nvim",
   config = function()
+    local actions = require("telescope.actions")
+
     require("telescope").setup({
       defaults = {
         file_ignore_patterns = {
           "^.git/",
           "^.cache/",
           "^.db",
+        },
+        mappings = {
+          i = {
+            ["<C-n>"] = actions.move_selection_next,
+            ["<C-p>"] = actions.move_selection_previous,
+          },
         },
       },
       extensions = {
