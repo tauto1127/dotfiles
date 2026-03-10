@@ -1,6 +1,43 @@
 ---@diagnostic disable: param-type-mismatch
-if vim.fn.executable("pbcopy") == 0 then
-  vim.g.clipboard = "osc52"
+if vim.env.TERM_PROGRAM == "WezTerm" and vim.fn.executable("pbcopy") == 0 then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local clipboard_cache = {
+    lines = nil,
+    regtype = nil,
+  }
+
+  local function copy(reg)
+    local osc52_copy = osc52.copy(reg)
+    return function(lines, regtype)
+      clipboard_cache.lines = vim.deepcopy(lines)
+      clipboard_cache.regtype = regtype
+      osc52_copy(lines, regtype)
+    end
+  end
+
+  local function paste()
+    return function()
+      if clipboard_cache.lines ~= nil then
+        return vim.deepcopy(clipboard_cache.lines), clipboard_cache.regtype
+      end
+
+      local contents = vim.fn.getreg('"')
+      local regtype = vim.fn.getregtype('"')
+      return vim.split(contents, "\n", { plain = true }), regtype
+    end
+  end
+
+  vim.g.clipboard = {
+    name = "osc52-copy-only",
+    copy = {
+      ["+"] = copy("+"),
+      ["*"] = copy("*"),
+    },
+    paste = {
+      ["+"] = paste(),
+      ["*"] = paste(),
+    },
+  }
 end
 
 local nocode = vim.g.vscode == nil
