@@ -72,6 +72,7 @@ if nocode then
   --
   -- diffview
   table.insert(plugins, require("plugins/diff-view-nvim"))
+  table.insert(plugins, require("plugins/codediff"))
   -- いい感じのoutline表示するやつ
   table.insert(plugins, require("plugins/aerial"))
   table.insert(plugins, require("plugins/nvim-treesitter_plugin"))
