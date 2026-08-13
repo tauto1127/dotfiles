@@ -115,17 +115,7 @@ lfcd () {
 }
 bindkey -s '^o' 'lfcd\n'
 
-# lego mind storms ev3
-export PATH=/usr/local/bin:$PATH
-export PATH=/usr/local/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
 alias find="gfind"
 
 # Docker CLI completions
 fpath=($HOME/.docker/completions $fpath)
-
-# Local bin (Antigravity CLI など)
-export PATH="$HOME/.local/bin:$PATH"
-
-# grok installer
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
