@@ -5,6 +5,7 @@
                 "rules": [
                     {
                         "description": "tana",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -287,10 +288,6 @@
                         "vendor_id": 12901
                     },
                     "ignore": false
-                },
-                {
-                    "identifiers": { "is_keyboard": true },
-                    "ignore": true
                 }
             ],
             "name": "Default profile",
