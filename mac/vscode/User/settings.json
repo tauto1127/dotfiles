@@ -166,4 +166,21 @@
         "make": true
     },
     "latex-workshop.latex.autoBuild.run": "never",
+    "http.systemCertificatesNode": true,
+    "claudeCode.preferredLocation": "panel",
+    "editor.accessibilitySupport": "off",
+    "gitlens.views.fileHistory.avatars": false,
+    "gitlens.views.scm.grouped.views": {
+        "commits": true,
+        "branches": true,
+        "remotes": true,
+        "stashes": true,
+        "tags": true,
+        "worktrees": true,
+        "contributors": true,
+        "fileHistory": false,
+        "repositories": true,
+        "searchAndCompare": true,
+        "launchpad": false
+    },
 }
