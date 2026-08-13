@@ -1,3 +1,5 @@
+SCRIPT_DIR="$(cd -- "$(dirname "$0")" && pwd)"
+
 # シンボリックリンクの作成
 DOT_FILES="keybindings.json settings.json"
 CODE_APPS="Code Cursor"
@@ -19,10 +21,10 @@ for file in $DOT_FILES
         read ans
         if [ "$ans" = "y" ]; then
             rm ~/Library/"Application Support"/$CODE_APP/User/$file
-            ln -sf `pwd`/mac/vscode/User/$file ~/Library/"Application Support"/$CODE_APP/User/
+            ln -sf "$SCRIPT_DIR/mac/vscode/User/$file" ~/Library/"Application Support"/$CODE_APP/User/
         fi
     else
-        ln -sf `pwd`/mac/vscode/User/$file ~/Library/"Application Support"/$CODE_APP/User/
+        ln -sf "$SCRIPT_DIR/mac/vscode/User/$file" ~/Library/"Application Support"/$CODE_APP/User/
     fi
 done
 

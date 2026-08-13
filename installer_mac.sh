@@ -37,16 +37,11 @@ brew install neovim
 
 brew install tmux
 
-read -n1 -p "Do you want to install node-js? (y/N): " yn
-if [[ $yn = [yY] ]]; then
-	brew install nvm
-	export NVM_DIR="$HOME/.nvm"
-	[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-	nvm install --lts
-fi
-
-echo "${BY}install pyenv${N}"
-brew install pyenv
+echo "${BY}install mise (version manager)${N}"
+brew install mise
+eval "$(mise activate bash)"
+mise use --global node@lts
+mise use --global python@3.10
 
 echo "${BY}Install MacOS Applications${N}"
 brew install --cask alt-tab
