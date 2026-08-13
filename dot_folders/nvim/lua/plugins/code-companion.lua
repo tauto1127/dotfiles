@@ -8,15 +8,14 @@ return {
   config = function()
     require("codecompanion").setup({
       adapters = {
-        opencode = function()
-          return require("codecompanion.adapters").extend("openai_compatible", {
-            name = "opencode",
-            env = {
-              url = "http://127.0.0.1:4096",
-              api_key = "opencode",
-            },
-          })
-        end,
+        acp = {
+          opencode = function()
+            return require("codecompanion.adapters").extend("opencode", {
+              command = "opencode",
+              args = { "acp" },
+            })
+          end,
+        },
       },
       strategies = {
         chat = {
