@@ -9,9 +9,12 @@ return {
     require("codecompanion").setup({
       adapters = {
         opencode = function()
-          return require("codecompanion.adapters").extend("acp", {
-            command = "opencode",
-            args = { "acp" },
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            name = "opencode",
+            env = {
+              url = "http://127.0.0.1:4096",
+              api_key = "opencode",
+            },
           })
         end,
       },
