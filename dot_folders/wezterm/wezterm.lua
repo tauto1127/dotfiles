@@ -22,6 +22,13 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- This is where you actually apply your config choices
 config.color_scheme = "tokyonight"
+
+-- フォント設定: Moralerspace Neon + Nerd Font フォールバック
+config.font = wezterm.font_with_fallback({
+  { family = "Moralerspace Neon", weight = "Regular" },
+  { family = "Hack Nerd Font" },
+})
+config.font_size = 14.0
 -- ウィンドウを閉じてもアプリを終了しない
 config.quit_when_all_windows_are_closed = false
 
