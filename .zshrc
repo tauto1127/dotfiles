@@ -45,13 +45,6 @@ if uname -a | grep -sq "Darwin"; then
 	# TeXLive
 	export PATH="/usr/local/texlive/2025/bin/universal-darwin:$PATH"
 
-	# <===ショートカット系
-	function obsidian {
-		open -a "Obsidian"
-	}
-	function pdf {
-		zathura $1
-	}
 	#<--- VSCODEをcodeコマンドで開く
 	function code {
 		if [[ $# = 0 ]]
@@ -66,40 +59,8 @@ if uname -a | grep -sq "Darwin"; then
 	function lg {
 		lazygit
 	}
-	#<--- Riderをcodeコマンドで開く
-	function rider {
-		if [[ $# = 0 ]]
-			then
-			open -a "Rider"
-		else
-			local argPath="$1"
-			[[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
-			open -a "Rider" "$argPath"
-		fi
-	}
-	function obs {
-		cd "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/main" 
-		sleep 0.5
-		pwd
-		nvim "inbox/1Index.md"
-	}
-	function skhdcf {
-		echo "show skhd config"
-		vi ~/.config/skhd/skhdrc -R
-	}
 
 	export PATH="$PATH:$HOME/.pub-cache/bin"
-
-	# エイリアスの設定 
-	alias rustbook='open -a "Microsoft Edge" ~/Code/book-rust/book/index.html'
-
-	# openjdk用
-	export SDKMAN_DIR=$(brew --prefix sdkman-cli 2>/dev/null || true)/libexec
-	[[ -n "$SDKMAN_DIR" && -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
-	. "$HOME/.local/bin/env" 2>/dev/null || true
-	export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-	export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-	export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 	# macOS キーチェーン利用関数
 	bws() {
@@ -159,10 +120,6 @@ export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
 alias find="gfind"
 
-# Google Cloud SDK
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
-
 # Docker CLI completions
 fpath=($HOME/.docker/completions $fpath)
 
@@ -172,8 +129,3 @@ export PATH="$HOME/.local/bin:$PATH"
 # grok installer
 export PATH="$HOME/.grok/bin:$PATH"
 fpath=(~/.grok/completions/zsh $fpath)
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
