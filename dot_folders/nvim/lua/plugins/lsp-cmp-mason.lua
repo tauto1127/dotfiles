@@ -194,6 +194,9 @@ lspconfig.dockerls.setup({})
 lspconfig.pylsp.setup({})
 lspconfig.gopls.setup({})
 lspconfig.kotlin_language_server.setup({})
+lspconfig.sourcekit.setup({
+  capabilities = capabilities,
+})
 lspconfig.clangd.setup({
   capabilities = capabilities,
   cmd = {
