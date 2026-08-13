@@ -8,7 +8,7 @@ fi
 export ANTHROPIC_API_KEY=
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$PATH:$HOME/bin:/usr/local/bin:/opt/homebrew/bin
+export PATH="$HOME/.local/bin:$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
 
 if [[ $TERM == xterm ]]; then
   export TERM=xterm-256color
