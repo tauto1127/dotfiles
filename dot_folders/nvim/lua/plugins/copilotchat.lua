@@ -1,6 +1,6 @@
 return {
   "CopilotC-Nvim/CopilotChat.nvim",
-  branch = "canary",
+  branch = "main",
   debug = true,
   opts = {
     debug = true,
