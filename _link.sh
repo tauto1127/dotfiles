@@ -9,7 +9,7 @@ fi
 # シンボリックリンクの作成
 DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh .skhdrc .yabairc"
 # .configフォルダー
-CONFIGDOT_FOLDERS="nvim karabiner iterm2 yabai skhd wezterm"
+CONFIGDOT_FOLDERS="nvim karabiner iterm2 yabai skhd wezterm mise"
 
 #~/folder
 DOT_FOLDERS=".hammerspoon"

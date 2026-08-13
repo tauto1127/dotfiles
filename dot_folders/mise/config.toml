@@ -1,0 +1,6 @@
+[tools]
+bun = "latest"
+gcloud = "latest"
+
+[env]
+_.path = ["~/.local/bin", "~/.grok/bin"]
