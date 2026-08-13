@@ -7,23 +7,21 @@ return {
   },
   config = function()
     require("codecompanion").setup({
+      adapters = {
+        opencode = function()
+          return require("codecompanion.adapters").extend("acp", {
+            command = "opencode",
+            args = { "acp" },
+          })
+        end,
+      },
       strategies = {
         chat = {
-          adapter = {
-            name = "copilot",
-            model = "claude-sonnet-4",
-          },
+          adapter = "opencode",
         },
         inline = {
-          adapter = {
-            name = "copilot",
-            model = "claude-sonnet-4",
-          }
+          adapter = "opencode",
         },
-        -- treesitter = {
-        --   enabled = true,
-        --   filetypes = { "javascript", "typescript", "lua", "python", "go" },
-        -- },
       },
       opts = {
         language = "ja",
