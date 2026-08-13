@@ -159,12 +159,6 @@ if uname -a | grep -sq "Darwin"; then
 	unset __conda_setup
 	# <<< conda initialize <<<
 
-	export NVM_DIR="$HOME/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-	[ -s "$NVM_DIR/bash_completiosn" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-	# tmuxとitemの連携
-	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 	# <===ショートカット系
 	function obsidian {
 		open -a "Obsidian"
@@ -294,12 +288,37 @@ alias find="gfind"
 export PATH=/usr/local/texlive/2025/bin/universal-darwin/:$PATH
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/takuto1127/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto1127/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/takuto1127/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/takuto1127/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/takuto1127/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto1127/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/takuto1127/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/takuto1127/google-cloud-sdk/completion.zsh.inc'; fi
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/takuto1127/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+#
+# Added by Antigravity CLI installer
+export PATH="/Users/takuto1127/.local/bin:$PATH"
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+# bun completions
+[ -s "/Users/takuto1127/.bun/_bun" ] && source "/Users/takuto1127/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+bws() {
+  BWS_ACCESS_TOKEN="$(
+    security find-generic-password \
+      -a "$USER" \
+      -s "bws-access-token" \
+      -w
+  )" command bws "$@"
+}
