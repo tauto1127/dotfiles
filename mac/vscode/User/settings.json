@@ -46,7 +46,6 @@
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
     "vscode-neovim.neovimExecutablePaths.linux": "vim",
     "vscode-neovim.neovimExecutablePaths.win32": "vim",
-    "python.defaultInterpreterPath": "/Users/takuto1127/.pyenv/versions/3.10.16/bin/python",
     "dart.devToolsBrowser": "default",
     "gitlens.advanced.messages": {
         "suppressCreatePullRequestPrompt": true
@@ -97,8 +96,6 @@
     "workbench.iconTheme": "catppuccin-mocha",
     "editor.minimap.enabled": false,
     "hediet.vscode-drawio.resizeImages": null,
-    "leetcode.workspaceFolder": "/Users/takuto1127/.leetcode",
-    "leetcode.defaultLanguage": "pythogv",
     "window.commandCenter": 1,
     "cSpell.userWords": [
         "dists",
