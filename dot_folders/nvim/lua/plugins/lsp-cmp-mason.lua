@@ -186,15 +186,25 @@ cmp.setup({
   },
 })
 
-lspconfig.eslint.setup({})
+local function setup_server(server, config_table)
+  config_table = config_table or {}
+  if vim.lsp.config and vim.lsp.config[server] then
+    vim.lsp.config(server, config_table)
+    vim.lsp.enable(server)
+  else
+    lspconfig[server].setup(config_table)
+  end
+end
+
+setup_server("eslint", {})
 -- require("lspconfig").csharp_ls.setup({ capabilities = capabilities })
-lspconfig.ts_ls.setup({})
-lspconfig.docker_compose_language_service.setup({})
-lspconfig.dockerls.setup({})
-lspconfig.pylsp.setup({})
-lspconfig.gopls.setup({})
-lspconfig.kotlin_language_server.setup({})
-lspconfig.sourcekit.setup({
+setup_server("ts_ls", {})
+setup_server("docker_compose_language_service", {})
+setup_server("dockerls", {})
+setup_server("pylsp", {})
+setup_server("gopls", {})
+setup_server("kotlin_language_server", {})
+setup_server("sourcekit", {
   capabilities = capabilities,
   cmd = {
     "xcrun",
@@ -210,7 +220,7 @@ lspconfig.sourcekit.setup({
     ".git"
   ),
 })
-lspconfig.clangd.setup({
+setup_server("clangd", {
   capabilities = capabilities,
   cmd = {
     "clangd",
@@ -257,7 +267,7 @@ lspconfig.clangd.setup({
     client.offset_encoding = "utf-16"
   end,
 })
-lspconfig.omnisharp.setup({
+setup_server("omnisharp", {
   --root_dir = /Users/takuto/.local/share/nvim/mason/bin
   cmd = { "/Users/takuto/.local/share/nvim/mason/bin/omnisharp" },
   settings = {
@@ -270,8 +280,8 @@ lspconfig.omnisharp.setup({
   --enable_import_completion = true,
   --enable_roslyn_analyzers = true,
 })
-lspconfig.lua_ls.setup({
-  settigns = {
+setup_server("lua_ls", {
+  settings = {
     Lua = {
       diagnostics = {
         globals = { "vim" },
