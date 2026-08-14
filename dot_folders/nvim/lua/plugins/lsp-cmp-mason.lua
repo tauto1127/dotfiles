@@ -196,6 +196,19 @@ lspconfig.gopls.setup({})
 lspconfig.kotlin_language_server.setup({})
 lspconfig.sourcekit.setup({
   capabilities = capabilities,
+  cmd = {
+    "xcrun",
+    "sourcekit-lsp",
+  },
+  filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
+  root_dir = util.root_pattern(
+    "Package.swift",
+    "*.xcodeproj",
+    "*.xcworkspace",
+    "compile_commands.json",
+    "buildServer.json",
+    ".git"
+  ),
 })
 lspconfig.clangd.setup({
   capabilities = capabilities,
