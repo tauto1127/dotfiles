@@ -188,12 +188,7 @@ cmp.setup({
 
 local function setup_server(server, config_table)
   config_table = config_table or {}
-  if vim.lsp.config and vim.lsp.config[server] then
-    vim.lsp.config(server, config_table)
-    vim.lsp.enable(server)
-  else
-    lspconfig[server].setup(config_table)
-  end
+  lspconfig[server].setup(config_table)
 end
 
 setup_server("eslint", {})
