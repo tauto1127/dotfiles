@@ -1,0 +1,66 @@
+# Installer and configuration policy
+
+## Source of truth
+
+`installer.sh` is the source of truth for software installation. `Brewfile` is
+kept only as historical reference and is not used by the installer.
+
+The installer always installs the shell bootstrap tools required to continue:
+zsh, wget, git, autojump, curl, tmux, figlet, and fzf.
+
+## macOS software selection
+
+After the bootstrap step, macOS shows two independent `fzf` multi-select menus.
+
+### CLI tools
+
+The CLI menu covers:
+
+- Neovim
+- lazygit
+- mise
+- Node.js through nvm
+- pyenv
+- GitHub CLI
+- uv
+- FVM
+- CocoaPods
+
+### GUI applications
+
+The GUI menu covers the optional cask applications. AeroSpace is the supported
+window manager. Amethyst is intentionally not offered.
+
+In either menu, use the arrow keys to move, TAB to select or clear an item, and
+ENTER to install the selected items. Selecting nothing is valid.
+
+`bash installer.sh -Y` selects every CLI and GUI item. This mode is intended for
+automated tests and should not be used for a minimal personal installation.
+
+## Configuration links
+
+`_link.sh` links the following configuration into the user's home directory:
+
+- Shell, tmux, and Powerlevel10k files
+- Neovim, Karabiner, yabai, skhd, WezTerm, mise, and lazygit directories
+- Hammerspoon
+- AeroSpace at `~/.aerospace.toml`
+
+The AeroSpace configuration uses the official `config-version = 2` format and
+vim-style focus/move bindings. AeroSpace and the legacy yabai/skhd bindings
+should not be active at the same time when their shortcuts overlap.
+
+VS Code or Cursor settings are linked separately by `vscode_mac.sh`, because
+the user must choose which editor should receive them.
+
+Application logins, tokens, app databases, and other machine state are not
+stored in this repository.
+
+## Verification
+
+`tests/installer/test-installer.sh` exercises both the Linux and macOS branches
+with mocked package managers and checks the generated links. The GitHub Actions
+workflow runs this test on `macos-latest` for every push and pull request.
+
+The workflow deliberately does not install real cask applications or perform
+interactive logins.

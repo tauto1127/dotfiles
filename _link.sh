@@ -7,9 +7,9 @@ if [ ! -e "$HOME/.config" ]; then
 	mkdir -p "$HOME/.config"
 fi
 # シンボリックリンクの作成
-DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh .skhdrc .yabairc"
+DOT_FILES=".zshrc .zprofile .tmux.conf .p10k.zsh .skhdrc .yabairc .aerospace.toml"
 # .configフォルダー
-CONFIGDOT_FOLDERS="nvim karabiner iterm2 yabai skhd wezterm mise"
+CONFIGDOT_FOLDERS="nvim karabiner iterm2 yabai skhd wezterm mise lazygit"
 
 #~/folder
 DOT_FOLDERS=".hammerspoon"

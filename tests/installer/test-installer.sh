@@ -81,7 +81,7 @@ EOF
     bash ./installer.sh -Y
   )
 
-  assert_contains "$log_file" "sudo apt install zsh wget git autojump curl tmux figlet -y"
+  assert_contains "$log_file" "sudo apt install zsh wget git autojump curl tmux figlet fzf -y"
   assert_contains "$log_file" "wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
   assert_contains "$log_file" "curl -fLo"
   assert_contains "$log_file" "nvim-linux-"
@@ -92,6 +92,8 @@ EOF
 
   assert_symlink "$home_dir/.zshrc"
   assert_symlink "$home_dir/.config/nvim"
+  assert_symlink "$home_dir/.config/lazygit"
+  assert_symlink "$home_dir/.aerospace.toml"
   if [[ ! -x "$home_dir/.local/bin/nvim" ]]; then
     echo "assertion failed: expected installed nvim binary"
     exit 1
@@ -121,14 +123,23 @@ run_macos_test() {
     bash ./installer.sh -Y
   )
 
-  assert_contains "$log_file" "brew install zsh wget git autojump curl tmux figlet"
+  assert_contains "$log_file" "brew install zsh wget git autojump curl tmux figlet fzf"
   assert_contains "$log_file" "brew install nvm"
   assert_contains "$log_file" "brew --prefix nvm"
+  assert_contains "$log_file" "brew install neovim"
+  assert_contains "$log_file" "brew install lazygit"
+  assert_contains "$log_file" "brew install mise"
+  assert_contains "$log_file" "brew install pyenv"
+  assert_contains "$log_file" "brew tap leoafarias/fvm"
+  assert_contains "$log_file" "brew install fvm"
+  assert_contains "$log_file" "brew install cocoapods"
+  assert_contains "$log_file" "brew install --cask aerospace"
   assert_contains "$log_file" "brew install --cask alt-tab"
   assert_contains "$log_file" "brew install --cask spotify"
   assert_contains "$log_file" "brew install gh"
   assert_contains "$log_file" "nvm install --lts"
   assert_not_contains "$log_file" "gh auth login"
+  assert_not_contains "$log_file" "brew install --cask amethyst"
 }
 
 run_linux_test
