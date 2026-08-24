@@ -250,6 +250,13 @@ function selectSoftware() {
         return 0
     fi
 
+    if [[ "${DOTFILES_NONINTERACTIVE:-false}" == true ]]; then
+        # A non-interactive run must never block waiting for an fzf TTY.
+        # Categories without an explicit selection are intentionally skipped.
+        SELECTED_SOFTWARE=''
+        return 0
+    fi
+
     if [[ "$AUTO_YES" == true ]]; then
         SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}")"
         return 0

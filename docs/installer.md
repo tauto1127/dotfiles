@@ -41,6 +41,10 @@ ENTER to install the selected items. Selecting nothing is valid.
 `bash installer.sh -Y` selects every CLI and GUI item. This mode is intended for
 automated tests and should not be used for a minimal personal installation.
 
+For non-interactive runs, set `DOTFILES_NONINTERACTIVE=true` and provide
+`DOTFILES_CLI_SELECTION` and/or `DOTFILES_GUI_SELECTION` as comma-separated
+software IDs. A category without a selection is skipped; it never opens fzf.
+
 ## Configuration links
 
 `_link.sh` links the following configuration into the user's home directory:

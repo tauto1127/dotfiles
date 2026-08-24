@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${FZF_FAIL_IF_CALLED:-false}" == true ]]; then
+  echo "fzf should not be called in this test" >&2
+  exit 99
+fi
+
 selected=",${FZF_SELECTION:-},"
 while IFS= read -r entry; do
   app="${entry%%|*}"

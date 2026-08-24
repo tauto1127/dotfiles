@@ -202,6 +202,33 @@ run_noninteractive_selection_test() {
   assert_not_contains "$log_file" "brew install --cask alt-tab"
 }
 
+run_noninteractive_partial_selection_test() {
+  local work_dir="$TMP_DIR/noninteractive-partial-work"
+  local home_dir="$TMP_DIR/noninteractive-partial-home"
+  local log_file="$TMP_DIR/noninteractive-partial-commands.log"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config"
+  : > "$log_file"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    export TEST_LOG_FILE="$log_file"
+    export PATH="$work_dir/tests/installer/mock-bin:$PATH"
+    export UNAME_OVERRIDE="Darwin"
+    export DOTFILES_NONINTERACTIVE=true
+    export DOTFILES_CLI_SELECTION=lazygit
+    unset DOTFILES_GUI_SELECTION
+    export FZF_FAIL_IF_CALLED=true
+    bash ./installer.sh
+  )
+
+  assert_contains "$log_file" "brew install lazygit"
+  assert_not_contains "$log_file" "brew install --cask aerospace"
+  assert_not_contains "$log_file" "brew install --cask alt-tab"
+}
+
 run_link_backup_test() {
   local work_dir="$TMP_DIR/link-work"
   local home_dir="$TMP_DIR/link-home"
@@ -225,6 +252,7 @@ run_link_backup_test() {
 
 run_selection_test
 run_noninteractive_selection_test
+run_noninteractive_partial_selection_test
 run_link_backup_test
 run_linux_test
 run_macos_test
