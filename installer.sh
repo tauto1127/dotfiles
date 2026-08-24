@@ -378,7 +378,11 @@ function installMacGuiSoftware() {
         else
             echo -e "${BY}Installing ${app}${N}"
         fi
-        brew install --cask "$app"
+        if [[ "$app" == 'aerospace' ]]; then
+            brew install --cask nikitabobko/tap/aerospace
+        else
+            brew install --cask "$app"
+        fi
     done <<< "$selected"
 }
 

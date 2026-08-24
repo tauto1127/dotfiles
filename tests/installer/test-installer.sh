@@ -133,7 +133,7 @@ run_macos_test() {
   assert_contains "$log_file" "brew tap leoafarias/fvm"
   assert_contains "$log_file" "brew install fvm"
   assert_contains "$log_file" "brew install cocoapods"
-  assert_contains "$log_file" "brew install --cask aerospace"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
   assert_contains "$log_file" "brew install --cask alt-tab"
   assert_contains "$log_file" "brew install --cask spotify"
   assert_contains "$log_file" "brew install gh"
@@ -170,7 +170,7 @@ run_selection_test() {
 
   assert_contains "$log_file" "brew install lazygit"
   assert_contains "$log_file" "brew install mise"
-  assert_contains "$log_file" "brew install --cask aerospace"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
   assert_not_contains "$log_file" "brew install neovim"
   assert_not_contains "$log_file" "brew install --cask alt-tab"
 }
@@ -197,7 +197,7 @@ run_noninteractive_selection_test() {
   )
 
   assert_contains "$log_file" "brew install lazygit"
-  assert_contains "$log_file" "brew install --cask aerospace"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
   assert_not_contains "$log_file" "brew install neovim"
   assert_not_contains "$log_file" "brew install --cask alt-tab"
 }
