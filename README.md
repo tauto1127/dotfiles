@@ -21,6 +21,9 @@ should receive the tracked settings and keybindings.
 See [docs/installer.md](docs/installer.md) for the installation and
 configuration policy.
 
+The `Real macOS installer smoke` workflow can be started manually to verify
+actual Homebrew installation of lazygit and AeroSpace on a fresh macOS runner.
+
 ## Debian / Ubuntu
 
 - `aptInstall.sh`を実行

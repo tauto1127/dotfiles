@@ -230,9 +230,25 @@ SELECTED_SOFTWARE=''
 
 function selectSoftware() {
     local header="$1"
-    shift
+    local selection_override="$2"
+    shift 2
     local software=("$@")
     local fzf_command="${FZF_BIN:-fzf}"
+    local software_item
+    local app
+
+    if [[ -n "$selection_override" ]]; then
+        SELECTED_SOFTWARE=''
+        for software_item in "${software[@]}"; do
+            app="${software_item%%|*}"
+            case ",${selection_override}," in
+                *",${app},"*)
+                    SELECTED_SOFTWARE="${SELECTED_SOFTWARE}${software_item}"$'\n'
+                    ;;
+            esac
+        done
+        return 0
+    fi
 
     if [[ "$AUTO_YES" == true ]]; then
         SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}")"
@@ -274,7 +290,7 @@ function installMacCliSoftware() {
     local description
     local entry
 
-    selectSoftware "CLIツールを選択" "${macCliSoftware[@]}"
+    selectSoftware "CLIツールを選択" "${DOTFILES_CLI_SELECTION:-}" "${macCliSoftware[@]}"
     if [[ -z "$SELECTED_SOFTWARE" ]]; then
         echo "CLIツールは選択されませんでした。"
         return 0
@@ -344,7 +360,7 @@ function installMacGuiSoftware() {
     local description
     local entry
 
-    selectSoftware "GUIアプリを選択" "${macGuiSoftware[@]}"
+    selectSoftware "GUIアプリを選択" "${DOTFILES_GUI_SELECTION:-}" "${macGuiSoftware[@]}"
     selected="$SELECTED_SOFTWARE"
 
     if [[ -z "$selected" ]]; then
@@ -369,7 +385,7 @@ function installMacGuiSoftware() {
 function promptYesNo() {
     local prompt=$1
     local yn
-    if [[ $AUTO_YES == true ]]; then
+    if [[ $AUTO_YES == true || "${DOTFILES_NONINTERACTIVE:-false}" == true ]]; then
         return 0  # 自動的にYesを返す
     fi
     

@@ -73,3 +73,8 @@ workflow runs this test on `macos-latest` for every push and pull request.
 
 The workflow deliberately does not install real cask applications or perform
 interactive logins.
+
+For an actual package-manager smoke test, run the manually triggered
+`Real macOS installer smoke` workflow. It runs on a fresh GitHub macOS runner,
+installs only lazygit and AeroSpace with Homebrew, and verifies the installed
+binary, application bundle, and configuration links.

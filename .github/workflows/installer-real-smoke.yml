@@ -1,0 +1,35 @@
+name: Real macOS installer smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install-selected-software:
+    name: Install lazygit and AeroSpace on macOS
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - name: Run installer with selected software
+        env:
+          DOTFILES_NONINTERACTIVE: true
+          DOTFILES_CLI_SELECTION: lazygit
+          DOTFILES_GUI_SELECTION: aerospace
+        run: bash installer.sh
+
+      - name: Verify real installations and links
+        run: |
+          brew list lazygit
+          brew list --cask aerospace
+          command -v lazygit
+          lazygit --version
+          test -d /Applications/AeroSpace.app
+          test -L "$HOME/.aerospace.toml"
+          test -L "$HOME/.config/lazygit"
