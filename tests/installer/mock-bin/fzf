@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+selected=",${FZF_SELECTION:-},"
+while IFS= read -r entry; do
+  app="${entry%%|*}"
+  case "$selected" in
+    *",${app},"*)
+      printf '%s\n' "$entry"
+      ;;
+  esac
+done

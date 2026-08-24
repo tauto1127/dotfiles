@@ -142,6 +142,62 @@ run_macos_test() {
   assert_not_contains "$log_file" "brew install --cask amethyst"
 }
 
+run_selection_test() {
+  local work_dir="$TMP_DIR/selection-work"
+  local home_dir="$TMP_DIR/selection-home"
+  local log_file="$TMP_DIR/selection-commands.log"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config"
+  : > "$log_file"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    export TEST_LOG_FILE="$log_file"
+    export PATH="$work_dir/tests/installer/mock-bin:$PATH"
+    export FZF_BIN=fzf
+    export UNAME_OVERRIDE="Unsupported"
+    export ID=unsupported
+    export FZF_SELECTION="lazygit,mise"
+    source ./installer.sh
+    PkgType='brew'
+    AUTO_YES=false
+    installMacCliSoftware
+    export FZF_SELECTION="aerospace"
+    installMacGuiSoftware
+  )
+
+  assert_contains "$log_file" "brew install lazygit"
+  assert_contains "$log_file" "brew install mise"
+  assert_contains "$log_file" "brew install --cask aerospace"
+  assert_not_contains "$log_file" "brew install neovim"
+  assert_not_contains "$log_file" "brew install --cask alt-tab"
+}
+
+run_link_backup_test() {
+  local work_dir="$TMP_DIR/link-work"
+  local home_dir="$TMP_DIR/link-home"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config/lazygit"
+  printf '%s\n' 'old config' > "$home_dir/.config/lazygit/config.yml"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    bash ./_link.sh
+  )
+
+  assert_symlink "$home_dir/.config/lazygit"
+  if ! compgen -G "$home_dir/.config/lazygit.dotfiles-backup-*" >/dev/null; then
+    echo "assertion failed: lazygit config backup was not created"
+    exit 1
+  fi
+}
+
+run_selection_test
+run_link_backup_test
 run_linux_test
 run_macos_test
 

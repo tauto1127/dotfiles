@@ -98,6 +98,17 @@ function installShellEssentials() {
             echo "${Y}install brew"
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" --unattended
             # unattendedでインストールすると，確認が出なくなる
+
+            if [[ -x /opt/homebrew/bin/brew ]]; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            elif [[ -x /usr/local/bin/brew ]]; then
+                eval "$(/usr/local/bin/brew shellenv)"
+            fi
+        fi
+
+        if ! command -v brew >/dev/null 2>&1; then
+            echo "Homebrew was installed but is not available in PATH." >&2
+            return 1
         fi
     fi
 
@@ -221,19 +232,20 @@ function selectSoftware() {
     local header="$1"
     shift
     local software=("$@")
+    local fzf_command="${FZF_BIN:-fzf}"
 
     if [[ "$AUTO_YES" == true ]]; then
         SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}")"
         return 0
     fi
 
-    if ! command -v fzf >/dev/null 2>&1; then
+    if ! command -v "$fzf_command" >/dev/null 2>&1; then
         echo "fzf is required for software selection but was not found." >&2
         return 1
     fi
 
     echo "TABで選択/解除、ENTERで決定"
-    SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}" | fzf \
+    SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}" | "$fzf_command" \
         --multi \
         --no-sort \
         --height=80% \

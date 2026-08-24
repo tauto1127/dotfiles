@@ -8,6 +8,10 @@ kept only as historical reference and is not used by the installer.
 The installer always installs the shell bootstrap tools required to continue:
 zsh, wget, git, autojump, curl, tmux, figlet, and fzf.
 
+When Homebrew is installed during bootstrap, the installer evaluates the
+Homebrew shell environment immediately so the same process can continue on
+both Apple Silicon and Intel Macs.
+
 ## macOS software selection
 
 After the bootstrap step, macOS shows two independent `fzf` multi-select menus.
@@ -55,6 +59,11 @@ the user must choose which editor should receive them.
 
 Application logins, tokens, app databases, and other machine state are not
 stored in this repository.
+
+If a real configuration file or directory already exists at a link destination,
+`_link.sh` moves it to a timestamped `.dotfiles-backup-*` path before creating
+the symlink. The old `installer_mac.sh` name is retained only as a compatibility
+wrapper around `installer.sh`.
 
 ## Verification
 
