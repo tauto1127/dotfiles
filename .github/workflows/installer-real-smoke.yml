@@ -2,6 +2,9 @@ name: Real macOS installer smoke
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - codex/installer-selection
 
 permissions:
   contents: read
