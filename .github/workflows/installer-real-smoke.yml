@@ -20,6 +20,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Remove runner-only Homebrew tap
+        run: brew untap aws/tap 2>/dev/null || true
+
       - name: Run installer with selected software
         env:
           DOTFILES_NONINTERACTIVE: true
