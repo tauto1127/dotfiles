@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          submodules: false
+          submodules: true
 
       - name: Run installer with selected software
         env:
