@@ -98,11 +98,22 @@ function installShellEssentials() {
             echo "${Y}install brew"
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" --unattended
             # unattendedでインストールすると，確認が出なくなる
+
+            if [[ -x /opt/homebrew/bin/brew ]]; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            elif [[ -x /usr/local/bin/brew ]]; then
+                eval "$(/usr/local/bin/brew shellenv)"
+            fi
+        fi
+
+        if ! command -v brew >/dev/null 2>&1; then
+            echo "Homebrew was installed but is not available in PATH." >&2
+            return 1
         fi
     fi
 
     echo "${BY}install zsh and wget${N}"
-    local packages=(zsh wget git autojump curl tmux figlet)
+    local packages=(zsh wget git autojump curl tmux figlet fzf)
     if [[ $PkgType == 'brew' ]]; then
         brew install "${packages[@]}"
     elif [[ "$PkgType" == 'apt' ]]; then
@@ -147,7 +158,6 @@ function installEditors() {
     echo "${BY}install neovim${N}"
     if [[ "$PkgType" == 'brew' ]]; then
         brew install neovim
-        brew install lazygit
     elif [[ "$PkgType" == 'apt' ]]; then
         installNeovimLinux
         sudo apt install clangd -y
@@ -160,14 +170,36 @@ function installEditors() {
     fi
 }
 
-function installFlutterEnvironment() {
-    echo "${BY}install flutter${N}"
-    if [[ $PkgType == 'brew' ]]; then
-        brew tap leoafarias/fvm
-        brew install fvm
-        brew install cocoapods
+function installPyenv() {
+    echo "${BY}install pyenv${N}"
+    if [[ "$PkgType" == 'brew' ]]; then
+        brew install pyenv
     elif [[ "$PkgType" == 'apt' ]]; then
-        curl -fsSL https://fvm.app/install.sh | bash
+        curl -fsSL https://pyenv.run | bash
+    fi
+}
+
+function installFvm() {
+    echo "${BY}install fvm${N}"
+    brew tap leoafarias/fvm
+    brew install fvm
+}
+
+function installCocoapods() {
+    echo "${BY}install cocoapods${N}"
+    brew install cocoapods
+}
+
+function installGitHubCli() {
+    echo "${BY}install GitHub CLI${N}"
+    if [[ "$PkgType" == 'brew' ]]; then
+        brew install gh
+    elif [[ "$PkgType" == 'apt' ]]; then
+        sudo apt install gh -y
+    fi
+
+    if [[ "$AUTO_YES" == false ]]; then
+        gh auth login
     fi
 }
 
@@ -194,53 +226,177 @@ function installUv() {
   curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
-function installMacApps() {
-    local macApps=(
-        "alt-tab|"
-        "raycast|"
-        "iterm2|"
-        "wezterm|"
-        "amethyst|"
-        "cursor|"
-        "adguard|"
-        "obsidian|"
-        "rize|"
-        "zotero|"
-        "nextcloud|"
-        "discord|"
-        "visual-studio-code|"
-        "docker|"
-        "tailscale|VPN"
-        "postman|API検証に便利なツール"
-        "slack|"
-        "microsoft-edge|推しブラウザ"
-        "omnifocus|"
-        "bitwarden|"
-        "hammerspoon|グローバルショートカット作るのに使う"
-        "zed|"
-        "kobo|"
-        "spotify|"
+SELECTED_SOFTWARE=''
+
+function selectSoftware() {
+    local header="$1"
+    local selection_override="$2"
+    shift 2
+    local software=("$@")
+    local fzf_command="${FZF_BIN:-fzf}"
+    local software_item
+    local app
+
+    if [[ -n "$selection_override" ]]; then
+        SELECTED_SOFTWARE=''
+        for software_item in "${software[@]}"; do
+            app="${software_item%%|*}"
+            case ",${selection_override}," in
+                *",${app},"*)
+                    SELECTED_SOFTWARE="${SELECTED_SOFTWARE}${software_item}"$'\n'
+                    ;;
+            esac
+        done
+        return 0
+    fi
+
+    if [[ "${DOTFILES_NONINTERACTIVE:-false}" == true ]]; then
+        # A non-interactive run must never block waiting for an fzf TTY.
+        # Categories without an explicit selection are intentionally skipped.
+        SELECTED_SOFTWARE=''
+        return 0
+    fi
+
+    if [[ "$AUTO_YES" == true ]]; then
+        SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}")"
+        return 0
+    fi
+
+    if ! command -v "$fzf_command" >/dev/null 2>&1; then
+        echo "fzf is required for software selection but was not found." >&2
+        return 1
+    fi
+
+    echo "TABで選択/解除、ENTERで決定"
+    SELECTED_SOFTWARE="$(printf '%s\n' "${software[@]}" | "$fzf_command" \
+        --multi \
+        --no-sort \
+        --height=80% \
+        --layout=reverse \
+        --border \
+        --delimiter='|' \
+        --with-nth=1,3 \
+        --header="$header" \
+        --prompt='ソフトウェア > ' \
+    )"
+}
+
+function installMacCliSoftware() {
+    local macCliSoftware=(
+        "neovim|neovim|モダンなエディタ"
+        "lazygit|lazygit|ターミナルGitクライアント"
+        "mise|mise|開発ツールのバージョン管理"
+        "node|node|Node.js (nvm)"
+        "pyenv|pyenv|Pythonバージョン管理"
+        "gh|gh|GitHub CLI"
+        "uv|uv|Pythonパッケージ/ツール管理"
+        "fvm|fvm|Flutterバージョン管理"
+        "cocoapods|cocoapods|iOS依存関係管理"
     )
     local app
     local description
     local entry
 
-    for entry in "${macApps[@]}"; do
+    selectSoftware "CLIツールを選択" "${DOTFILES_CLI_SELECTION:-}" "${macCliSoftware[@]}"
+    if [[ -z "$SELECTED_SOFTWARE" ]]; then
+        echo "CLIツールは選択されませんでした。"
+        return 0
+    fi
+
+    while IFS= read -r entry; do
+        [[ -z "$entry" ]] && continue
         app="${entry%%|*}"
+        entry="${entry#*|}"
+        description="${entry#*|}"
+        echo -e "${BY}Installing ${app} - ${description}${N}"
+        case "$app" in
+            neovim|lazygit|mise)
+                brew install "$app"
+                ;;
+            node)
+                installNodeJs
+                ;;
+            pyenv)
+                installPyenv
+                ;;
+            gh)
+                installGitHubCli
+                ;;
+            uv)
+                installUv
+                ;;
+            fvm)
+                installFvm
+                ;;
+            cocoapods)
+                installCocoapods
+                ;;
+        esac
+    done <<< "$SELECTED_SOFTWARE"
+}
+
+function installMacGuiSoftware() {
+    local macGuiSoftware=(
+        "aerospace|cask|メインのウィンドウ管理"
+        "alt-tab|cask|"
+        "raycast|cask|"
+        "iterm2|cask|"
+        "wezterm|cask|"
+        "cursor|cask|"
+        "adguard|cask|"
+        "obsidian|cask|"
+        "rize|cask|"
+        "zotero|cask|"
+        "nextcloud|cask|"
+        "discord|cask|"
+        "visual-studio-code|cask|"
+        "docker|cask|"
+        "tailscale|cask|VPN"
+        "postman|cask|API検証に便利なツール"
+        "slack|cask|"
+        "microsoft-edge|cask|推しブラウザ"
+        "omnifocus|cask|"
+        "bitwarden|cask|"
+        "hammerspoon|cask|グローバルショートカット作るのに使う"
+        "zed|cask|"
+        "kobo|cask|"
+        "spotify|cask|"
+    )
+    local selected
+    local app
+    local description
+    local entry
+
+    selectSoftware "GUIアプリを選択" "${DOTFILES_GUI_SELECTION:-}" "${macGuiSoftware[@]}"
+    selected="$SELECTED_SOFTWARE"
+
+    if [[ -z "$selected" ]]; then
+        echo "GUIアプリは選択されませんでした。"
+        return 0
+    fi
+
+    while IFS= read -r entry; do
+        [[ -z "$entry" ]] && continue
+        app="${entry%%|*}"
+        entry="${entry#*|}"
         description="${entry#*|}"
         if [[ -n "$description" ]]; then
             echo -e "${BY}Installing ${app} - ${description}${N}"
         else
             echo -e "${BY}Installing ${app}${N}"
         fi
-        brew install --cask "$app"
-    done
+        if [[ "$app" == 'aerospace' ]]; then
+            brew install --cask nikitabobko/tap/aerospace
+        else
+            brew install --cask "$app"
+        fi
+    done <<< "$selected"
 }
 
 function promptYesNo() {
     local prompt=$1
     local yn
-    if [[ $AUTO_YES == true ]]; then
+    if [[ $AUTO_YES == true || "${DOTFILES_NONINTERACTIVE:-false}" == true ]]; then
         return 0  # 自動的にYesを返す
     fi
     
@@ -257,44 +413,34 @@ function init() {
     installShellEssentials
     installZshPlugins
 
-    if [[ $AUTO_YES == true ]] || promptYesNo "開発環境をインストールしますか？ (y/N): "; then
-        installEditors
-    fi
-
-    if [[ $AUTO_YES == true ]] || promptYesNo "Node.jsをインストールしますか？ (y/N): "; then
-        installNodeJs
-    fi
-
-    if [[ $AUTO_YES == true ]] || promptYesNo "Pyenvをインストールしますか？ (y/N): "; then
-        if [[ "$PkgType" == 'brew' ]]; then
-            brew install pyenv
-        elif [[ "$PkgType" == 'apt' ]]; then
-            curl -fsSL https://pyenv.run | bash
+    if [[ "$PkgType" == 'brew' ]]; then
+        if [[ $AUTO_YES == true ]] || promptYesNo "CLIツールを選択してインストールしますか？ (y/N): "; then
+            installMacCliSoftware
         fi
-    fi
 
-    if [[ $AUTO_YES == true ]] || promptYesNo "アプリケーションをインストールしますか？ (y/N): "; then
-        if [[ $PkgType == 'brew' ]]; then
-            installMacApps
+        if [[ $AUTO_YES == true ]] || promptYesNo "GUIアプリを選択してインストールしますか？ (y/N): "; then
+            installMacGuiSoftware
         fi
-    fi
-
-    if [[ $AUTO_YES == true ]] || promptYesNo "Ghをインストールしますか？ (y/N): "; then
-        if [[ $PkgType == 'brew' ]]; then
-            brew install gh
-            if [[ $AUTO_YES == false ]]; then
-                gh auth login
-            fi
-        elif [[ "$PkgType" == 'apt' ]]; then
-            sudo apt install gh -y
-            if [[ $AUTO_YES == false ]]; then
-                gh auth login
-            fi
+    else
+        if [[ $AUTO_YES == true ]] || promptYesNo "開発環境をインストールしますか？ (y/N): "; then
+            installEditors
         fi
-    fi
 
-    if [[ $AUTO_YES == true ]] || promptYesNo "uvをインストールしますか？ (y/N): "; then
-        installUv
+        if [[ $AUTO_YES == true ]] || promptYesNo "Node.jsをインストールしますか？ (y/N): "; then
+            installNodeJs
+        fi
+
+        if [[ $AUTO_YES == true ]] || promptYesNo "Pyenvをインストールしますか？ (y/N): "; then
+            installPyenv
+        fi
+
+        if [[ $AUTO_YES == true ]] || promptYesNo "Ghをインストールしますか？ (y/N): "; then
+            installGitHubCli
+        fi
+
+        if [[ $AUTO_YES == true ]] || promptYesNo "uvをインストールしますか？ (y/N): "; then
+            installUv
+        fi
     fi
 
     echo "${BY}Link dotfiles${N}"

@@ -1,0 +1,23 @@
+name: Installer tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  installer:
+    name: macOS installer test
+    runs-on: macos-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - name: Run installer tests
+        shell: bash
+        run: bash tests/installer/test-installer.sh

@@ -81,7 +81,7 @@ EOF
     bash ./installer.sh -Y
   )
 
-  assert_contains "$log_file" "sudo apt install zsh wget git autojump curl tmux figlet -y"
+  assert_contains "$log_file" "sudo apt install zsh wget git autojump curl tmux figlet fzf -y"
   assert_contains "$log_file" "wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
   assert_contains "$log_file" "curl -fLo"
   assert_contains "$log_file" "nvim-linux-"
@@ -92,6 +92,8 @@ EOF
 
   assert_symlink "$home_dir/.zshrc"
   assert_symlink "$home_dir/.config/nvim"
+  assert_symlink "$home_dir/.config/lazygit"
+  assert_symlink "$home_dir/.aerospace.toml"
   if [[ ! -x "$home_dir/.local/bin/nvim" ]]; then
     echo "assertion failed: expected installed nvim binary"
     exit 1
@@ -121,16 +123,137 @@ run_macos_test() {
     bash ./installer.sh -Y
   )
 
-  assert_contains "$log_file" "brew install zsh wget git autojump curl tmux figlet"
+  assert_contains "$log_file" "brew install zsh wget git autojump curl tmux figlet fzf"
   assert_contains "$log_file" "brew install nvm"
   assert_contains "$log_file" "brew --prefix nvm"
+  assert_contains "$log_file" "brew install neovim"
+  assert_contains "$log_file" "brew install lazygit"
+  assert_contains "$log_file" "brew install mise"
+  assert_contains "$log_file" "brew install pyenv"
+  assert_contains "$log_file" "brew tap leoafarias/fvm"
+  assert_contains "$log_file" "brew install fvm"
+  assert_contains "$log_file" "brew install cocoapods"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
   assert_contains "$log_file" "brew install --cask alt-tab"
   assert_contains "$log_file" "brew install --cask spotify"
   assert_contains "$log_file" "brew install gh"
   assert_contains "$log_file" "nvm install --lts"
   assert_not_contains "$log_file" "gh auth login"
+  assert_not_contains "$log_file" "brew install --cask amethyst"
 }
 
+run_selection_test() {
+  local work_dir="$TMP_DIR/selection-work"
+  local home_dir="$TMP_DIR/selection-home"
+  local log_file="$TMP_DIR/selection-commands.log"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config"
+  : > "$log_file"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    export TEST_LOG_FILE="$log_file"
+    export PATH="$work_dir/tests/installer/mock-bin:$PATH"
+    export FZF_BIN=fzf
+    export UNAME_OVERRIDE="Unsupported"
+    export ID=unsupported
+    export FZF_SELECTION="lazygit,mise"
+    source ./installer.sh
+    PkgType='brew'
+    AUTO_YES=false
+    installMacCliSoftware
+    export FZF_SELECTION="aerospace"
+    installMacGuiSoftware
+  )
+
+  assert_contains "$log_file" "brew install lazygit"
+  assert_contains "$log_file" "brew install mise"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
+  assert_not_contains "$log_file" "brew install neovim"
+  assert_not_contains "$log_file" "brew install --cask alt-tab"
+}
+
+run_noninteractive_selection_test() {
+  local work_dir="$TMP_DIR/noninteractive-work"
+  local home_dir="$TMP_DIR/noninteractive-home"
+  local log_file="$TMP_DIR/noninteractive-commands.log"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config"
+  : > "$log_file"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    export TEST_LOG_FILE="$log_file"
+    export PATH="$work_dir/tests/installer/mock-bin:$PATH"
+    export UNAME_OVERRIDE="Darwin"
+    export DOTFILES_NONINTERACTIVE=true
+    export DOTFILES_CLI_SELECTION=lazygit
+    export DOTFILES_GUI_SELECTION=aerospace
+    bash ./installer.sh
+  )
+
+  assert_contains "$log_file" "brew install lazygit"
+  assert_contains "$log_file" "brew install --cask nikitabobko/tap/aerospace"
+  assert_not_contains "$log_file" "brew install neovim"
+  assert_not_contains "$log_file" "brew install --cask alt-tab"
+}
+
+run_noninteractive_partial_selection_test() {
+  local work_dir="$TMP_DIR/noninteractive-partial-work"
+  local home_dir="$TMP_DIR/noninteractive-partial-home"
+  local log_file="$TMP_DIR/noninteractive-partial-commands.log"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config"
+  : > "$log_file"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    export TEST_LOG_FILE="$log_file"
+    export PATH="$work_dir/tests/installer/mock-bin:$PATH"
+    export UNAME_OVERRIDE="Darwin"
+    export DOTFILES_NONINTERACTIVE=true
+    export DOTFILES_CLI_SELECTION=lazygit
+    unset DOTFILES_GUI_SELECTION
+    export FZF_FAIL_IF_CALLED=true
+    bash ./installer.sh
+  )
+
+  assert_contains "$log_file" "brew install lazygit"
+  assert_not_contains "$log_file" "brew install --cask aerospace"
+  assert_not_contains "$log_file" "brew install --cask alt-tab"
+}
+
+run_link_backup_test() {
+  local work_dir="$TMP_DIR/link-work"
+  local home_dir="$TMP_DIR/link-home"
+
+  copy_fixture "$work_dir"
+  mkdir -p "$home_dir/.config/lazygit"
+  printf '%s\n' 'old config' > "$home_dir/.config/lazygit/config.yml"
+
+  (
+    cd "$work_dir"
+    export HOME="$home_dir"
+    bash ./_link.sh
+  )
+
+  assert_symlink "$home_dir/.config/lazygit"
+  if ! compgen -G "$home_dir/.config/lazygit.dotfiles-backup-*" >/dev/null; then
+    echo "assertion failed: lazygit config backup was not created"
+    exit 1
+  fi
+}
+
+run_selection_test
+run_noninteractive_selection_test
+run_noninteractive_partial_selection_test
+run_link_backup_test
 run_linux_test
 run_macos_test
 
